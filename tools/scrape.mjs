@@ -75,9 +75,18 @@ function parsePage(html, series, fileNum) {
     cur = null;
   };
 
-  content.find('div.s, div.pc, div.m, div.p, ol').each((_, el) => {
+  content.find('div.s, div.pc, div.pr, div.m, div.p, ol').each((_, el) => {
     const tag = el.tagName.toLowerCase();
     const $el = $(el);
+
+    // Artist / credit line (e.g. Impimbano "Fr Siméon") -> author.
+    if (tag === 'div' && $el.hasClass('pr')) {
+      const credit = clean($el.text());
+      if (cur && credit) {
+        cur.author = cur.author ? `${cur.author} · ${credit}` : credit;
+      }
+      return;
+    }
 
     // Title — always begins a song
     if (tag === 'div' && $el.hasClass('s')) {
