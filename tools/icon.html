@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  #stage { width: 1024px; height: 1024px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+  // Render the icon emblem. mode = 'full' (navy bg) or 'fg' (transparent, padded).
+  const params = new URLSearchParams(location.search);
+  const mode = params.get('mode') || 'full';
+  const GOLD = '#FFFFFF', GOLD2 = '#DCEFE5', NAVY1 = '#0E8A63', NAVY2 = '#083D2D';
+
+  // emblem scale: full bleed for icon, smaller (safe zone) for adaptive foreground
+  const s = mode === 'fg' ? 0.66 : 0.80;
+
+  const bg = mode === 'full'
+    ? `<defs>
+         <radialGradient id="bgg" cx="38%" cy="30%" r="85%">
+           <stop offset="0%" stop-color="${NAVY1}"/>
+           <stop offset="100%" stop-color="${NAVY2}"/>
+         </radialGradient>
+       </defs>
+       <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#bgg)"/>`
+    : '';
+
+  // Emblem group, drawn in a 512-centered coordinate space then scaled.
+  const emblem = `
+    <g transform="translate(512,540) scale(${s}) translate(-512,-512)">
+      <defs>
+        <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${GOLD}"/>
+          <stop offset="100%" stop-color="${GOLD2}"/>
+        </linearGradient>
+      </defs>
+      <!-- open book -->
+      <g fill="none" stroke="url(#gold)" stroke-width="20"
+         stroke-linejoin="round" stroke-linecap="round">
+        <!-- spine + two pages -->
+        <path d="M512 392
+                 C 440 352, 322 350, 250 380
+                 L 250 700
+                 C 322 670, 440 672, 512 712"/>
+        <path d="M512 392
+                 C 584 352, 702 350, 774 380
+                 L 774 700
+                 C 702 670, 584 672, 512 712"/>
+        <line x1="512" y1="392" x2="512" y2="712"/>
+        <!-- page lines (left) -->
+        <path d="M318 442 C 372 426, 436 426, 478 446" stroke-width="13"/>
+        <path d="M318 506 C 372 490, 436 490, 478 510" stroke-width="13"/>
+        <!-- page lines (right) -->
+        <path d="M546 446 C 588 426, 652 426, 706 442" stroke-width="13"/>
+        <path d="M546 510 C 588 490, 652 490, 706 506" stroke-width="13"/>
+      </g>
+      <!-- music note rising above the book -->
+      <g fill="url(#gold)">
+        <rect x="556" y="250" width="17" height="150" rx="8"/>
+        <path d="M573 250 C 573 250, 648 262, 648 318 C 648 300, 600 300, 590 322 Z"/>
+        <ellipse cx="548" cy="402" rx="34" ry="25" transform="rotate(-18 548 402)"/>
+      </g>
+    </g>`;
+
+  document.getElementById('stage').innerHTML =
+    `<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">${bg}${emblem}</svg>`;
+</script>
+</body>
+</html>

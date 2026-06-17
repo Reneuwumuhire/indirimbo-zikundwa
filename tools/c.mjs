@@ -1,0 +1,16 @@
+import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
+const W=390,H=844; mkdirSync('caps',{recursive:true});
+const b=await chromium.launch({headless:true});
+const ctx=await b.newContext({viewport:{width:W,height:H},deviceScaleFactor:2,hasTouch:true,isMobile:true});
+const p=await ctx.newPage();
+const tap=async(x,y,d=1100)=>{await p.touchscreen.tap(x,y);await p.waitForTimeout(d);};
+await p.goto('http://localhost:8099/',{waitUntil:'load'});
+await p.waitForTimeout(5000);
+await p.setViewportSize({width:W,height:H+2});await p.waitForTimeout(400);
+await p.setViewportSize({width:W,height:H});
+await p.evaluate(()=>window.dispatchEvent(new Event('resize')));
+await p.waitForTimeout(2200);
+await tap(110,330); await tap(195,360);
+await p.screenshot({path:'caps/final.png'}); console.log('ok');
+await b.close();

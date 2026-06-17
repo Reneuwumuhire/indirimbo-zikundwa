@@ -1,0 +1,24 @@
+# Flutter / Dart build artifacts
+app/build/
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.packages
+**/build/
+**/.dart_tool/
+
+# Node (scraper / screenshot tooling)
+tools/node_modules/
+tools/video/
+tools/frames/
+tools/dbg/
+
+# Ad-hoc screenshot scratch dirs (anywhere)
+caps/
+caps2/
+**/caps/
+
+# Misc
+.DS_Store
+*.log
+/tmp/

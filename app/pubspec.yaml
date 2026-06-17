@@ -1,0 +1,109 @@
+name: indirimbo
+description: "Indirimbo Zikundwa — offline Christian hymnal reader (content from missionnaire.net)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  shared_preferences: ^2.3.3
+  web_socket_channel: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#0F172A"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    background_color: "#0F172A"
+    theme_color: "#0F172A"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/data/hymns.json
+
+  fonts:
+    # UI typography — bundled Google Fonts (offline). Classic hymnal look:
+    # Playfair Display (display titles), Spectral (reading serif), Space Mono
+    # (small-caps labels, numbers, metadata).
+    - family: Playfair Display
+      fonts:
+        - asset: assets/fonts/PlayfairDisplay.ttf
+    - family: Spectral
+      fonts:
+        - asset: assets/fonts/Spectral-Regular.ttf
+        - asset: assets/fonts/Spectral-Medium.ttf
+          weight: 500
+    - family: Space Mono
+      fonts:
+        - asset: assets/fonts/SpaceMono-Regular.ttf
+        - asset: assets/fonts/SpaceMono-Bold.ttf
+          weight: 700
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+    # Selectable font-combination families (title + lyrics pairings).
+    - family: Montserrat
+      fonts: [{ asset: assets/fonts/Montserrat.ttf }]
+    - family: Lora
+      fonts: [{ asset: assets/fonts/Lora.ttf }]
+    - family: Oswald
+      fonts: [{ asset: assets/fonts/Oswald.ttf }]
+    - family: Merriweather
+      fonts: [{ asset: assets/fonts/Merriweather.ttf }]
+    - family: Syne
+      fonts: [{ asset: assets/fonts/Syne.ttf }]
+    - family: Plus Jakarta Sans
+      fonts: [{ asset: assets/fonts/PlusJakartaSans.ttf }]
+    - family: Cormorant Garamond
+      fonts: [{ asset: assets/fonts/CormorantGaramond.ttf }]
+    - family: Source Sans 3
+      fonts: [{ asset: assets/fonts/SourceSans3.ttf }]
+    - family: Archivo Black
+      fonts: [{ asset: assets/fonts/ArchivoBlack.ttf }]
+    - family: Roboto Mono
+      fonts: [{ asset: assets/fonts/RobotoMono.ttf }]
+    - family: Fraunces
+      fonts: [{ asset: assets/fonts/Fraunces.ttf }]
+    - family: DM Sans
+      fonts: [{ asset: assets/fonts/DMSans.ttf }]
+    - family: Space Grotesk
+      fonts: [{ asset: assets/fonts/SpaceGrotesk.ttf }]
+    - family: Arimo
+      fonts: [{ asset: assets/fonts/Arimo.ttf }]
+    # Reader font choices
+    - family: Libre Baskerville
+      fonts:
+        - asset: assets/fonts/LibreBaskerville-Bold.ttf
+    - family: Gentium Plus
+      fonts:
+        - asset: assets/fonts/GentiumPlus-Regular.ttf
+    - family: Georgia
+      fonts:
+        - asset: assets/fonts/georgia.ttf
+    - family: Times New Roman
+      fonts:
+        - asset: assets/fonts/times.ttf
+    - family: Source Sans Pro
+      fonts:
+        - asset: assets/fonts/SourceSansPro-Regular.ttf
+        - asset: assets/fonts/SourceSansPro-Bold.ttf
+          weight: 700

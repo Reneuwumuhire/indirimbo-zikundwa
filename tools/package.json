@@ -1,0 +1,12 @@
+{
+  "name": "indirimbo-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0"
+  }
+}
