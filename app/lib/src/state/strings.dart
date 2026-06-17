@@ -44,8 +44,10 @@ class Strings {
       _t('Rechercher dans tous les recueils…', 'Search across all books…');
   String results(int n) => _t('$n résultat(s)', '$n result(s)');
   String get searchPrompt =>
-      _t('Cherchez par numéro, titre ou parole', 'Search by number, title or lyrics');
+      _t('Numéro, titre, parole ou artiste', 'Number, title, lyrics or artist');
   String get noResults => _t('Aucun chant trouvé.', 'No song found.');
+  String get allArtists => _t('Tous les artistes', 'All artists');
+  String artistsCount(int n) => _t('$n artistes', '$n artists');
 
   // Favorites
   String get favEmptyTitle =>

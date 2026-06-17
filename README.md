@@ -30,7 +30,9 @@ _More sizes & French captions in [`store/`](store/) — `appstore/{en,fr}`
 ## Features
 
 - **Fully offline** — the whole corpus is a bundled JSON asset; no network needed.
-- **Fast search** by number, title or lyrics, across all books or within one.
+- **Fast search** by number, title, lyrics **or artist**, across all books or
+  within one. Books that credit artists (e.g. Impimbano) also offer an
+  **artist filter** to show only one performer's songs.
 - **"Cantica" classic-hymnal design** — warm parchment palette, high-contrast
   serif titles (Playfair Display), a readable book serif (Spectral) for reading,
   and a typewriter monospace (Space Mono) for labels — all bundled. Solid

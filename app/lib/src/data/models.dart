@@ -52,8 +52,9 @@ class Song {
       );
 
   // Lower-cased haystack for fast search (built once per song on load).
+  // Includes the artist/author so songs can be found by who performed them.
   late final String searchBlob =
-      '$label ${title.toLowerCase()} ${lyrics.toLowerCase()}';
+      '$label ${title.toLowerCase()} ${(author ?? '').toLowerCase()} ${lyrics.toLowerCase()}';
 
   /// Title normalized for display: ALL-CAPS titles (some books store them that
   /// way) are converted to sentence case so every book looks consistent —
