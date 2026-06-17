@@ -75,6 +75,7 @@ class _RootShellState extends ConsumerState<RootShell> {
   Widget _shell() {
     final index = ref.watch(selectedTabProvider);
     final t = ref.watch(stringsProvider);
+    final immersive = ref.watch(immersiveProvider);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -97,7 +98,9 @@ class _RootShellState extends ConsumerState<RootShell> {
               ),
           ],
         ),
-        bottomNavigationBar: NavigationBar(
+        bottomNavigationBar: immersive
+            ? null
+            : NavigationBar(
           selectedIndex: index,
           onDestinationSelected: (i) {
             if (i == index) {

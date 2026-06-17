@@ -12,6 +12,21 @@ import 'widgets/collection_list_tile.dart';
 
 typedef _Entry = ({Collection collection, int index});
 
+void _sortEntries(List<_Entry> entries, LibrarySort sort) {
+  switch (sort) {
+    case LibrarySort.alpha:
+      entries.sort((a, b) =>
+          a.collection.name.toLowerCase().compareTo(b.collection.name.toLowerCase()));
+    case LibrarySort.alphaDesc:
+      entries.sort((a, b) =>
+          b.collection.name.toLowerCase().compareTo(a.collection.name.toLowerCase()));
+    case LibrarySort.count:
+      entries.sort((a, b) => b.collection.songCount.compareTo(a.collection.songCount));
+    case LibrarySort.original:
+      entries.sort((a, b) => a.index.compareTo(b.index));
+  }
+}
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -27,12 +42,14 @@ class HomeScreen extends ConsumerWidget {
     final collections = repo.collections;
     final layout = ref.watch(settingsProvider.select((s) => s.libraryLayout));
     final filter = ref.watch(settingsProvider.select((s) => s.libraryFilter));
+    final sort = ref.watch(settingsProvider.select((s) => s.librarySort));
 
     final entries = <_Entry>[
       for (var i = 0; i < collections.length; i++)
         if (filter == null || bookGroupOf(collections[i].id) == filter)
           (collection: collections[i], index: i),
     ];
+    _sortEntries(entries, sort);
 
     return Scaffold(
       body: SafeArea(
@@ -45,7 +62,10 @@ class HomeScreen extends ConsumerWidget {
                 count: entries.length,
                 label: t.allBooks.toUpperCase(),
                 layout: layout,
+                sort: sort,
+                t: t,
                 onLayout: (l) => ref.read(settingsProvider.notifier).setLibraryLayout(l),
+                onSort: (s) => ref.read(settingsProvider.notifier).setLibrarySort(s),
               ),
             ),
             SliverToBoxAdapter(
@@ -151,16 +171,33 @@ class _Subhead extends StatelessWidget {
   final int count;
   final String label;
   final LibraryLayout layout;
+  final LibrarySort sort;
+  final dynamic t;
   final ValueChanged<LibraryLayout> onLayout;
-  const _Subhead(
-      {required this.count, required this.label, required this.layout, required this.onLayout});
+  final ValueChanged<LibrarySort> onSort;
+  const _Subhead({
+    required this.count,
+    required this.label,
+    required this.layout,
+    required this.sort,
+    required this.t,
+    required this.onLayout,
+    required this.onSort,
+  });
+
+  String _sortLabel(LibrarySort s) => switch (s) {
+        LibrarySort.alpha => t.sortAlpha,
+        LibrarySort.alphaDesc => t.sortAlphaDesc,
+        LibrarySort.count => t.sortCount,
+        LibrarySort.original => t.sortOriginal,
+      };
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final reader = theme.extension<ReaderPalette>()!;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 18, 14, 2),
+      padding: const EdgeInsets.fromLTRB(20, 18, 10, 2),
       child: Row(
         children: [
           Text('$count · $label',
@@ -171,6 +208,33 @@ class _Subhead extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   color: reader.muted)),
           const Spacer(),
+          PopupMenuButton<LibrarySort>(
+            tooltip: t.sortBy,
+            initialValue: sort,
+            onSelected: onSort,
+            color: theme.colorScheme.surface,
+            icon: Icon(Icons.sort_rounded, size: 19, color: reader.muted),
+            itemBuilder: (_) => [
+              for (final s in LibrarySort.values)
+                PopupMenuItem(
+                  value: s,
+                  child: Row(
+                    children: [
+                      Icon(
+                          s == sort ? Icons.check_rounded : Icons.check_rounded,
+                          size: 16,
+                          color: s == sort ? theme.colorScheme.primary : Colors.transparent),
+                      const SizedBox(width: 8),
+                      Text(_sortLabel(s),
+                          style: TextStyle(
+                              fontFamily: AppFonts.body,
+                              color: theme.colorScheme.onSurface,
+                              fontWeight: s == sort ? FontWeight.w700 : FontWeight.w400)),
+                    ],
+                  ),
+                ),
+            ],
+          ),
           _layoutBtn(theme, reader, Icons.grid_view_rounded, LibraryLayout.grid),
           _layoutBtn(theme, reader, Icons.view_agenda_outlined, LibraryLayout.list),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../data/models.dart';
 import '../state/favorites.dart';
@@ -28,9 +29,22 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
   /// which pauses scroll-following until they tap "resume" (or the song changes).
   bool _following = true;
 
+  bool? _wakeApplied;
+
+  void _applyWakelock(bool on) {
+    if (_wakeApplied == on) return;
+    _wakeApplied = on;
+    try {
+      on ? WakelockPlus.enable() : WakelockPlus.disable();
+    } catch (_) {}
+  }
+
   @override
   void dispose() {
     _scroll.dispose();
+    try {
+      WakelockPlus.disable();
+    } catch (_) {}
     super.dispose();
   }
 
@@ -59,6 +73,7 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
     final combo = ref.watch(fontComboProvider);
     final session = ref.watch(shareControllerProvider);
     final repo = ref.watch(repositoryProvider).valueOrNull;
+    _applyWakelock(ref.watch(settingsProvider.select((s) => s.keepScreenOn)));
 
     final view = session.followedView;
     if (view != null) {

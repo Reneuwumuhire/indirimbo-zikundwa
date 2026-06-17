@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../data/models.dart';
 import '../share/transport.dart';
@@ -25,6 +27,15 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   final _scroll = ScrollController();
   DateTime _lastBroadcast = DateTime.fromMillisecondsSinceEpoch(0);
 
+  // Pinch-to-zoom state (zoom multiplies the reading font size).
+  final Map<int, Offset> _pointers = {};
+  double _zoom = 1.0;
+  double _baseDist = 0;
+  double _baseZoom = 1.0;
+  bool _pinching = false;
+
+  bool? _wakeApplied;
+
   @override
   void initState() {
     super.initState();
@@ -36,10 +47,65 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   void dispose() {
     _scroll.removeListener(_onScroll);
     _scroll.dispose();
+    // Leaving the reader: drop fullscreen, restore system UI, release wakelock.
+    ref.read(immersiveProvider.notifier).state = false;
+    _setSystemUi(false);
+    try {
+      WakelockPlus.disable();
+    } catch (_) {}
     super.dispose();
   }
 
   void _onScroll() => _broadcast();
+
+  void _setSystemUi(bool immersive) {
+    try {
+      SystemChrome.setEnabledSystemUIMode(
+          immersive ? SystemUiMode.immersiveSticky : SystemUiMode.edgeToEdge);
+    } catch (_) {}
+  }
+
+  void _toggleImmersive() {
+    final next = !ref.read(immersiveProvider);
+    ref.read(immersiveProvider.notifier).state = next;
+    _setSystemUi(next);
+  }
+
+  void _applyWakelock(bool on) {
+    if (_wakeApplied == on) return;
+    _wakeApplied = on;
+    try {
+      on ? WakelockPlus.enable() : WakelockPlus.disable();
+    } catch (_) {}
+  }
+
+  double _distance() {
+    final pts = _pointers.values.toList();
+    return (pts[0] - pts[1]).distance;
+  }
+
+  void _onPointerDown(PointerDownEvent e) {
+    _pointers[e.pointer] = e.position;
+    if (_pointers.length == 2) {
+      _baseDist = _distance();
+      _baseZoom = _zoom;
+      setState(() => _pinching = true);
+    }
+  }
+
+  void _onPointerMove(PointerMoveEvent e) {
+    if (!_pointers.containsKey(e.pointer)) return;
+    _pointers[e.pointer] = e.position;
+    if (_pinching && _pointers.length >= 2 && _baseDist > 0) {
+      final z = (_baseZoom * _distance() / _baseDist).clamp(0.7, 2.6);
+      if (z != _zoom) setState(() => _zoom = z);
+    }
+  }
+
+  void _onPointerUp(int pointer) {
+    _pointers.remove(pointer);
+    if (_pointers.length < 2 && _pinching) setState(() => _pinching = false);
+  }
 
   void _broadcast({bool force = false}) {
     final session = ref.read(shareControllerProvider);
@@ -74,10 +140,17 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     final collection = repo.collection(song.series);
     final isFav = ref.watch(favoritesProvider).contains(song.id);
     final session = ref.watch(shareControllerProvider);
+    final immersive = ref.watch(immersiveProvider);
+
+    _applyWakelock(settings.keepScreenOn);
 
     ref.listen(shareControllerProvider.select((s) => s.isHosting), (_, hosting) {
       if (hosting) _broadcast(force: true);
     });
+
+    // Effective (pinch-zoomed) font size for the title + lyrics.
+    final fs = settings.fontSize * _zoom;
+    final zoomed = settings.copyWith(fontSize: fs);
 
     final inSeries = repo.songsIn(song.series);
     final pos = inSeries.indexWhere((s) => s.id == song.id);
@@ -89,19 +162,76 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
         .where((s) => s.number == song.number && s.variant != null)
         .toList();
 
+    final reading = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onDoubleTap: _toggleImmersive,
+      child: Listener(
+        onPointerDown: _onPointerDown,
+        onPointerMove: _onPointerMove,
+        onPointerUp: (e) => _onPointerUp(e.pointer),
+        onPointerCancel: (e) => _onPointerUp(e.pointer),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: ListView(
+              controller: _scroll,
+              physics: _pinching ? const NeverScrollableScrollPhysics() : null,
+              padding: EdgeInsets.fromLTRB(24, immersive ? 8 : 18, 24, 40),
+              children: [
+                Text('#${song.label}',
+                    style: TextStyle(
+                        fontFamily: AppFonts.mono,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                        color: theme.colorScheme.primary)),
+                const SizedBox(height: 10),
+                Text(
+                  song.displayTitle,
+                  style: combo.titleStyle(
+                    theme.textTheme.displaySmall,
+                    fontSize: (fs + 9).clamp(24, 56),
+                    color: palette.verseText,
+                  ).copyWith(height: 1.16),
+                ),
+                if (song.author != null && song.author!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(song.author!,
+                      style: TextStyle(
+                          fontFamily: AppFonts.mono,
+                          fontSize: 11.5,
+                          letterSpacing: 0.3,
+                          color: palette.muted)),
+                ],
+                const SizedBox(height: 18),
+                Container(width: 40, height: 1.5, color: palette.muted.withValues(alpha: 0.5)),
+                if (variants.length > 1) ...[
+                  const SizedBox(height: 18),
+                  _VariantSwitcher(current: song, variants: variants, label: t.version),
+                ],
+                const SizedBox(height: 26),
+                LyricsViewer(song: song, settings: zoomed),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
     return Scaffold(
       backgroundColor: palette.page,
       body: Column(
         children: [
-          _TopBar(
-            bookName: collection.name,
-            isFav: isFav,
-            onBack: () => Navigator.of(context).maybePop(),
-            onFav: () => ref.read(favoritesProvider.notifier).toggle(song.id),
-            onDisplay: () => _openDisplaySheet(context, t.display),
-            onShare: () => showShareSheet(context, song.id),
-          ),
-          if (session.isHosting)
+          if (!immersive)
+            _TopBar(
+              bookName: collection.name,
+              isFav: isFav,
+              onBack: () => Navigator.of(context).maybePop(),
+              onFav: () => ref.read(favoritesProvider.notifier).toggle(song.id),
+              onDisplay: () => _openDisplaySheet(context, t.display),
+              onShare: () => showShareSheet(context, song.id),
+            ),
+          if (!immersive && session.isHosting)
             _HostingBanner(
               liveLabel: t.shareLiveBadge,
               followersLabel: t.shareFollowers(session.followers),
@@ -109,57 +239,15 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
               onStop: () => ref.read(shareControllerProvider.notifier).leave(),
             ),
           Expanded(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 720),
-                child: ListView(
-                  controller: _scroll,
-                  padding: const EdgeInsets.fromLTRB(24, 18, 24, 40),
-                  children: [
-                    Text('#${song.label}',
-                        style: TextStyle(
-                            fontFamily: AppFonts.mono,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.5,
-                            color: theme.colorScheme.primary)),
-                    const SizedBox(height: 10),
-                    Text(
-                      song.displayTitle,
-                      style: combo.titleStyle(
-                        theme.textTheme.displaySmall,
-                        fontSize: (settings.fontSize + 9).clamp(24, 44),
-                        color: palette.verseText,
-                      ).copyWith(height: 1.16),
-                    ),
-                    if (song.author != null && song.author!.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(song.author!,
-                          style: TextStyle(
-                              fontFamily: AppFonts.mono,
-                              fontSize: 11.5,
-                              letterSpacing: 0.3,
-                              color: palette.muted)),
-                    ],
-                    const SizedBox(height: 18),
-                    Container(width: 40, height: 1.5, color: palette.muted.withValues(alpha: 0.5)),
-                    if (variants.length > 1) ...[
-                      const SizedBox(height: 18),
-                      _VariantSwitcher(current: song, variants: variants, label: t.version),
-                    ],
-                    const SizedBox(height: 26),
-                    LyricsViewer(song: song, settings: settings),
-                  ],
-                ),
-              ),
+            child: SafeArea(top: immersive, bottom: immersive, child: reading),
+          ),
+          if (!immersive)
+            _BottomBar(
+              number: song.label,
+              prevLabel: t.shareBack,
+              onPrev: prev == null ? null : () => _go(prev),
+              onNext: next == null ? null : () => _go(next),
             ),
-          ),
-          _BottomBar(
-            number: song.label,
-            prevLabel: t.shareBack,
-            onPrev: prev == null ? null : () => _go(prev),
-            onNext: next == null ? null : () => _go(next),
-          ),
         ],
       ),
     );

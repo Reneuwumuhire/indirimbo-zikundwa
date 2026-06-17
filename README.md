@@ -12,6 +12,19 @@ internet connection**.
 > Foi, Chants de Victoire, Coll. des Cantiques, Crois Seulement, Impimbano,
 > Chorus, Izindi…
 
+## Screenshots
+
+<p>
+  <img src="store/appstore/en/01-library.png" width="200" alt="Library"/>
+  <img src="store/appstore/en/02-reader.png" width="200" alt="Reader"/>
+  <img src="store/appstore/en/03-share.png" width="200" alt="Live share"/>
+  <img src="store/appstore/en/04-fonts.png" width="200" alt="Font pairings"/>
+  <img src="store/appstore/en/05-languages.png" width="200" alt="Languages"/>
+</p>
+
+_More sizes & French captions in [`store/`](store/) — `appstore/{en,fr}`
+(1290×2796) and `playstore/{en,fr}` (1080×1920)._
+
 ## Features
 
 - **Fully offline** — the whole corpus is a bundled JSON asset; no network needed.
@@ -28,8 +41,12 @@ internet connection**.
   Inter, Montserrat & Lora, Oswald & Merriweather, Syne & Plus Jakarta Sans,
   Cormorant Garamond & Source Sans 3, Archivo Black & Roboto Mono, Fraunces & DM
   Sans, Space Grotesk & Arimo (+ default Playfair & Spectral). Live preview.
-- **Language grouping** — filter the library by Kirundi / Kinyarwanda / Swahili /
-  Français / Combiné; grid or list layout.
+- **Language grouping & sorting** — filter the library by Kirundi / Kinyarwanda /
+  Swahili / Français / Combiné; grid or list layout; sort A→Z (default), Z→A,
+  most songs, or book order.
+- **Immersive reading** — double-tap the lyrics for distraction-free fullscreen
+  (double-tap again to exit), **pinch to zoom** the text, and an optional
+  **keep-screen-on** while reading (on by default).
 - **Bilingual UI** (Français / English).
 - **Three reading themes** — Clair / Sépia / Sombre — plus font size & line spacing.
 - **Favorites** and A/B song variants (same number, two versions).
@@ -84,9 +101,10 @@ App identifiers: bundle id **`bi.indirimbo.indirimbo`**, display name
 
 ### Store assets
 
-Marketing screenshots for both stores are in [`store/`](store/) — Apple sizes
-(`store/appstore/`, 1290×2796, 6.7″) and Play sizes (`store/playstore/`,
-1080×1920). Regenerate with `tools/store_shots.mjs` (see below).
+Captioned marketing screenshots (French + English) are in [`store/`](store/) —
+Apple sizes (`store/appstore/{en,fr}/`, 1290×2796, 6.7″) and Play sizes
+(`store/playstore/{en,fr}/`, 1080×1920). Regenerate with `tools/store_shots.mjs`
+(see below).
 
 ## Live share — quick local test (Mac + phone, no Xcode needed)
 
@@ -118,8 +136,9 @@ node scrape.mjs             # rebuilds app/assets/data/hymns.json
 ```bash
 cd app && flutter build web --release
 cd build/web && python3 -m http.server 8099 &
-cd ../../../tools && npm install && npx playwright install chromium
-node store_shots.mjs        # writes ../store/appstore/*.png and ../store/playstore/*.png
+cd app && dart run tools/share_host.dart auto &   # for the live-share shot
+cd ../tools && npm install && npx playwright install chromium
+node store_shots.mjs        # writes ../store/{appstore,playstore}/{fr,en}/*.png
 ```
 
 ## Credits & license

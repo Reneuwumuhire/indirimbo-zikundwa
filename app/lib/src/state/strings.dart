@@ -69,6 +69,11 @@ class Strings {
   String get layoutSection => _t('Disposition des recueils', 'Books layout');
   String get layoutGrid => _t('Grille', 'Grid');
   String get layoutList => _t('Liste', 'List');
+  String get sortBy => _t('Trier', 'Sort');
+  String get sortAlpha => _t('A → Z', 'A → Z');
+  String get sortAlphaDesc => _t('Z → A', 'Z → A');
+  String get sortCount => _t('Plus de chants', 'Most songs');
+  String get sortOriginal => _t('Ordre du recueil', 'Book order');
 
   // Reader controls
   String get themeSection => _t('Thème', 'Theme');
@@ -111,6 +116,12 @@ class Strings {
   String version(String v) => _t('Version $v', 'Version $v');
   String get songNotFound => _t('Chant introuvable', 'Song not found');
   String get display => _t('Affichage', 'Display');
+  String get keepScreenOn => _t('Garder l’écran allumé', 'Keep screen on');
+  String get keepScreenOnHint =>
+      _t('Ne pas éteindre pendant la lecture', 'Don’t dim while reading lyrics');
+  String get fullscreenHint =>
+      _t('Astuce : double‑touchez les paroles pour le plein écran ; pincez pour zoomer.',
+          'Tip: double‑tap the lyrics for fullscreen; pinch to zoom.');
 
   // Live share
   String get shareTitle => _t('Partage en direct', 'Live share');

@@ -114,6 +114,51 @@ class SettingsScreen extends ConsumerWidget {
             _sectionLabel(context, reader, t.display),
             const SizedBox(height: 10),
             _card(theme, reader, child: const ReaderControls()),
+            const SizedBox(height: 16),
+            _card(
+              theme,
+              reader,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.lightbulb_outline_rounded, color: theme.colorScheme.primary, size: 20),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(t.keepScreenOn,
+                                style: const TextStyle(
+                                    fontFamily: AppFonts.body, fontWeight: FontWeight.w600, fontSize: 15)),
+                            const SizedBox(height: 2),
+                            Text(t.keepScreenOnHint,
+                                style: TextStyle(
+                                    fontFamily: AppFonts.body, fontSize: 12.5, color: reader.muted)),
+                          ],
+                        ),
+                      ),
+                      Switch(
+                        value: settings.keepScreenOn,
+                        onChanged: (v) => ctrl.setKeepScreenOn(v),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.touch_app_outlined, color: reader.muted, size: 18),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(t.fullscreenHint,
+                            style: TextStyle(
+                                fontFamily: AppFonts.body, fontSize: 12.5, height: 1.4, color: reader.muted)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 24),
 
             _infoTile(theme, reader,

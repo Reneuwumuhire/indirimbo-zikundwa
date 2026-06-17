@@ -14,6 +14,10 @@ final selectedTabProvider = StateProvider<int>((_) => 0);
 /// The current global search query.
 final searchQueryProvider = StateProvider<String>((_) => '');
 
+/// Whether the reader is in distraction-free fullscreen mode (toggled by a
+/// double-tap on the lyrics). When true the bottom navigation is hidden too.
+final immersiveProvider = StateProvider<bool>((_) => false);
+
 /// Results for the current query (empty when query is blank).
 final searchResultsProvider = Provider<List<Song>>((ref) {
   final repo = ref.watch(repositoryProvider).valueOrNull;

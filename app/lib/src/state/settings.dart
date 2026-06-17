@@ -12,6 +12,9 @@ import 'strings.dart';
 /// How the collection ("books") library is laid out.
 enum LibraryLayout { grid, list }
 
+/// How the books are ordered in the library.
+enum LibrarySort { alpha, alphaDesc, count, original }
+
 /// Reading fonts bundled in assets/fonts (declared in pubspec).
 const readerFonts = <String>[
   'Spectral',
@@ -30,9 +33,13 @@ class ReaderSettings {
   final AppThemeMode themeMode;
   final AppLanguage language;
   final LibraryLayout libraryLayout;
+  final LibrarySort librarySort;
 
   /// Index into [fontCombos] — the chosen title/lyrics font pairing.
   final int fontCombo;
+
+  /// Keep the screen awake while reading lyrics (default on).
+  final bool keepScreenOn;
 
   /// Language-group filter for the library; null = show all groups.
   final BookGroup? libraryFilter;
@@ -44,7 +51,9 @@ class ReaderSettings {
     this.themeMode = AppThemeMode.normal,
     this.language = AppLanguage.fr,
     this.libraryLayout = LibraryLayout.grid,
+    this.librarySort = LibrarySort.alpha,
     this.fontCombo = 0,
+    this.keepScreenOn = true,
     this.libraryFilter,
   });
 
@@ -55,7 +64,9 @@ class ReaderSettings {
     AppThemeMode? themeMode,
     AppLanguage? language,
     LibraryLayout? libraryLayout,
+    LibrarySort? librarySort,
     int? fontCombo,
+    bool? keepScreenOn,
     // Use a sentinel so null can be set explicitly (= "All").
     Object? libraryFilter = _unset,
   }) =>
@@ -66,7 +77,9 @@ class ReaderSettings {
         themeMode: themeMode ?? this.themeMode,
         language: language ?? this.language,
         libraryLayout: libraryLayout ?? this.libraryLayout,
+        librarySort: librarySort ?? this.librarySort,
         fontCombo: fontCombo ?? this.fontCombo,
+        keepScreenOn: keepScreenOn ?? this.keepScreenOn,
         libraryFilter: libraryFilter == _unset
             ? this.libraryFilter
             : libraryFilter as BookGroup?,
@@ -89,7 +102,9 @@ class SettingsController extends Notifier<ReaderSettings> {
   static const _kTheme = 'reader.theme';
   static const _kLang = 'reader.lang';
   static const _kLayout = 'reader.layout';
+  static const _kSort = 'reader.sort';
   static const _kCombo = 'reader.combo';
+  static const _kWake = 'reader.keepScreenOn';
   static const _kFilter = 'reader.filter'; // -1 = all, else BookGroup index
 
   SharedPreferences get _prefs => ref.read(sharedPrefsProvider);
@@ -108,7 +123,10 @@ class SettingsController extends Notifier<ReaderSettings> {
           (p.getInt(_kLang) ?? 0).clamp(0, AppLanguage.values.length - 1)],
       libraryLayout: LibraryLayout.values[
           (p.getInt(_kLayout) ?? 0).clamp(0, LibraryLayout.values.length - 1)],
+      librarySort: LibrarySort.values[
+          (p.getInt(_kSort) ?? 0).clamp(0, LibrarySort.values.length - 1)],
       fontCombo: (p.getInt(_kCombo) ?? 0).clamp(0, fontCombos.length - 1),
+      keepScreenOn: p.getBool(_kWake) ?? true,
       libraryFilter: (filterIdx >= 0 && filterIdx < BookGroup.values.length)
           ? BookGroup.values[filterIdx]
           : null,
@@ -147,6 +165,11 @@ class SettingsController extends Notifier<ReaderSettings> {
     _prefs.setInt(_kLayout, l.index);
   }
 
+  void setLibrarySort(LibrarySort s) {
+    state = state.copyWith(librarySort: s);
+    _prefs.setInt(_kSort, s.index);
+  }
+
   /// Set the library language filter; pass null for "All".
   void setLibraryFilter(BookGroup? g) {
     state = state.copyWith(libraryFilter: g);
@@ -157,6 +180,11 @@ class SettingsController extends Notifier<ReaderSettings> {
     final v = i.clamp(0, fontCombos.length - 1);
     state = state.copyWith(fontCombo: v);
     _prefs.setInt(_kCombo, v);
+  }
+
+  void setKeepScreenOn(bool v) {
+    state = state.copyWith(keepScreenOn: v);
+    _prefs.setBool(_kWake, v);
   }
 }
 
