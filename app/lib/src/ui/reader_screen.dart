@@ -173,7 +173,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 720),
-            child: ListView(
+            child: ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: ListView(
               controller: _scroll,
               physics: _pinching ? const NeverScrollableScrollPhysics() : null,
               padding: EdgeInsets.fromLTRB(24, immersive ? 8 : 18, 24, 40),
@@ -212,6 +214,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                 const SizedBox(height: 26),
                 LyricsViewer(song: song, settings: zoomed),
               ],
+            ),
             ),
           ),
         ),

@@ -144,7 +144,10 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
                           child: Center(
                             child: ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 720),
-                              child: ListView(
+                              child: ScrollConfiguration(
+                                behavior: ScrollConfiguration.of(context)
+                                    .copyWith(scrollbars: false),
+                                child: ListView(
                                 controller: _scroll,
                                 padding: const EdgeInsets.fromLTRB(24, 22, 24, 56),
                             children: [
@@ -186,6 +189,7 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
                               const SizedBox(height: 28),
                               LyricsViewer(song: song, settings: settings),
                                 ],
+                              ),
                               ),
                             ),
                           ),
