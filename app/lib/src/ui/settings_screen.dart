@@ -7,6 +7,7 @@ import '../state/share_state.dart';
 import '../state/strings.dart';
 import '../theme/app_theme.dart';
 import '../theme/font_combos.dart';
+import 'about_sheet.dart';
 import 'share_sheet.dart';
 import 'widgets/reader_controls.dart';
 
@@ -167,7 +168,11 @@ class SettingsScreen extends ConsumerWidget {
                 subtitle: t.libraryDesc(total, repo.collections.length)),
             const SizedBox(height: 4),
             _infoTile(theme, reader,
-                icon: Icons.info_outline, title: t.aboutTile, subtitle: t.aboutDesc),
+                icon: Icons.info_outline,
+                title: t.aboutTile,
+                subtitle: t.aboutDesc,
+                onTap: () => showAboutSheet(context),
+                trailing: Icon(Icons.chevron_right_rounded, color: reader.muted)),
           ],
         ),
       ),
@@ -339,14 +344,20 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Widget _infoTile(ThemeData theme, ReaderPalette reader,
-      {required IconData icon, required String title, required String subtitle}) {
+      {required IconData icon,
+      required String title,
+      required String subtitle,
+      VoidCallback? onTap,
+      Widget? trailing}) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
+      onTap: onTap,
       leading: Icon(icon, color: theme.colorScheme.primary),
       title: Text(title,
           style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.w600)),
       subtitle: Text(subtitle,
           style: TextStyle(fontFamily: AppFonts.body, color: reader.muted, fontSize: 13)),
+      trailing: trailing,
     );
   }
 }

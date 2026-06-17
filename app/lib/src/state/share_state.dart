@@ -80,6 +80,18 @@ final discoveryProvider = StreamProvider.autoDispose<List<DiscoveredSession>>((r
   return discovery.sessions;
 });
 
+/// Always-on discovery used to surface the "session nearby" banner while the
+/// app is open (kept alive for the app lifetime). Empty on web (no UDP).
+final nearbySessionsProvider = StreamProvider<List<DiscoveredSession>>((ref) {
+  if (!canHostSessions) return Stream.value(const []); // web/desktop w/o UDP
+  final discovery = startDiscovery();
+  ref.onDispose(discovery.close);
+  return discovery.sessions;
+});
+
+/// Join targets the user has dismissed (so the banner doesn't nag).
+final dismissedNearbyProvider = StateProvider<Set<String>>((_) => {});
+
 final shareControllerProvider =
     NotifierProvider<ShareController, ShareSession>(ShareController.new);
 

@@ -64,6 +64,27 @@ class Strings {
         'Indirimbo Zikundwa · lecteur de cantiques (v1.0)',
         'Indirimbo Zikundwa · hymn reader (v1.0)',
       );
+  String get aboutAppBody => _t(
+        'Indirimbo Zikundwa rassemble des cantiques chrétiens issus de divers '
+            'recueils publics, pour une lecture entièrement hors‑ligne.',
+        'Indirimbo Zikundwa gathers Christian hymns from various public '
+            'hymnals, for fully offline reading.',
+      );
+  String get aboutSiteTitle => _t('Le ministère missionnaire.net', 'About missionnaire.net');
+  String get aboutSiteBody => _t(
+        'missionnaire.net est un ministère chrétien où vous trouverez bien plus : '
+            'des applications à télécharger, des prédications (sermons), de la '
+            'musique audio et d’autres ressources spirituelles.',
+        'missionnaire.net is a Christian ministry where you’ll find much more: '
+            'downloadable apps, sermons, audio music and other spiritual resources.',
+      );
+  String get visitSite => _t('Visiter missionnaire.net', 'Visit missionnaire.net');
+  String get aboutSourceNote => _t(
+        'Les chants proviennent de recueils du domaine public ; cette application '
+            'est un lecteur indépendant et hors‑ligne.',
+        'Songs are from public-domain hymnals; this app is an independent, '
+            'offline reader.',
+      );
   String get languageSection => _t('Langue', 'Language');
   String get fontComboSection => _t('Combinaison de polices', 'Font pairing');
   String get layoutSection => _t('Disposition des recueils', 'Books layout');
@@ -161,6 +182,8 @@ class Strings {
   String get shareCopied => _t('Copié', 'Copied');
   String get shareWaiting => _t('En attente du partage…', 'Waiting for the share…');
   String get shareResume => _t('Reprendre le suivi', 'Resume following');
+  String get nearbySession => _t('Session à proximité', 'Session nearby');
+  String get nearbyJoin => _t('Rejoindre', 'Join');
   String get shareDisconnected => _t('Hôte déconnecté', 'Host disconnected');
   String get shareLiveBadge => _t('EN DIRECT', 'LIVE');
   String get shareBack => _t('Retour', 'Back');

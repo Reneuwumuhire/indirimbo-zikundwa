@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../share/transport.dart' show canJoinSessions;
+import '../share/transport.dart' show canJoinSessions, DiscoveredSession;
 import '../state/providers.dart';
 import '../state/settings.dart';
 import '../state/share_state.dart';
@@ -76,6 +76,21 @@ class _RootShellState extends ConsumerState<RootShell> {
     final index = ref.watch(selectedTabProvider);
     final t = ref.watch(stringsProvider);
     final immersive = ref.watch(immersiveProvider);
+
+    // "Session nearby" banner: surface a discovered host when the user is idle.
+    final session = ref.watch(shareControllerProvider);
+    final dismissed = ref.watch(dismissedNearbyProvider);
+    final nearby = ref.watch(nearbySessionsProvider).valueOrNull ?? const <DiscoveredSession>[];
+    DiscoveredSession? banner;
+    if (!immersive && !session.isHosting && !session.isFollowing) {
+      for (final s in nearby) {
+        if (!dismissed.contains(s.wsUrl)) {
+          banner = s;
+          break;
+        }
+      }
+    }
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -88,13 +103,33 @@ class _RootShellState extends ConsumerState<RootShell> {
         }
       },
       child: Scaffold(
-        body: IndexedStack(
-          index: index,
+        body: Stack(
           children: [
-            for (var i = 0; i < _roots.length; i++)
-              Navigator(
-                key: _navKeys[i],
-                onGenerateRoute: (s) => MaterialPageRoute(builder: (_) => _roots[i]),
+            IndexedStack(
+              index: index,
+              children: [
+                for (var i = 0; i < _roots.length; i++)
+                  Navigator(
+                    key: _navKeys[i],
+                    onGenerateRoute: (s) => MaterialPageRoute(builder: (_) => _roots[i]),
+                  ),
+              ],
+            ),
+            if (banner != null)
+              Positioned(
+                left: 12,
+                right: 12,
+                bottom: 12,
+                child: _NearbyBanner(
+                  session: banner,
+                  title: t.nearbySession,
+                  joinLabel: t.nearbyJoin,
+                  onJoin: () => ref.read(shareControllerProvider.notifier).joinSession(banner!),
+                  onDismiss: () => ref.read(dismissedNearbyProvider.notifier).state = {
+                    ...dismissed,
+                    banner!.wsUrl,
+                  },
+                ),
               ),
           ],
         ),
@@ -126,6 +161,78 @@ class _RootShellState extends ConsumerState<RootShell> {
                 icon: const Icon(Icons.tune_outlined),
                 selectedIcon: const Icon(Icons.tune),
                 label: t.navSettings),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NearbyBanner extends StatelessWidget {
+  final DiscoveredSession session;
+  final String title;
+  final String joinLabel;
+  final VoidCallback onJoin;
+  final VoidCallback onDismiss;
+  const _NearbyBanner({
+    required this.session,
+    required this.title,
+    required this.joinLabel,
+    required this.onJoin,
+    required this.onDismiss,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final accent = theme.colorScheme.primary;
+    return Material(
+      color: accent,
+      borderRadius: BorderRadius.circular(14),
+      elevation: 6,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
+        child: Row(
+          children: [
+            const Icon(Icons.podcasts_rounded, color: Colors.white, size: 20),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(title.toUpperCase(),
+                      style: const TextStyle(
+                          fontFamily: AppFonts.mono,
+                          fontSize: 9.5,
+                          letterSpacing: 1,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white70)),
+                  Text(session.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontFamily: AppFonts.heading,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white)),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: onJoin,
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: accent,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+              child: Text(joinLabel,
+                  style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.w700)),
+            ),
+            IconButton(
+              onPressed: onDismiss,
+              icon: const Icon(Icons.close_rounded, color: Colors.white70, size: 18),
+            ),
           ],
         ),
       ),

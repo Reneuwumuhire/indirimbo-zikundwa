@@ -3,9 +3,11 @@
 A clean, **offline-first Flutter app** (Android · iOS · Web) for reading
 Christian hymn collections in **Kirundi, Kinyarwanda, Swahili and French**.
 
-The hymn content comes from **[missionnaire.net](https://www.missionnaire.net/)**.
-This app bundles the songs locally so they are fully readable **without an
-internet connection**.
+The songs come from **various public-domain hymnals**; this app bundles them
+locally so they are fully readable **without an internet connection**. It is an
+independent reader connected to the **[missionnaire.net](https://www.missionnaire.net/)**
+ministry — a Christian website where you can also find downloadable apps,
+sermons, audio music and other resources (see the in-app *About* screen).
 
 > **5,495 songs · 17 collections** — Umuco 1/2, Ikirundi, Iz'i Gisenyi,
 > Gushimisha, Agakiza, Wokovu, Nyimbo za Mungu, Tenzi za Rohoni, Les Ailes de la
@@ -52,7 +54,14 @@ _More sizes & French captions in [`store/`](store/) — `appstore/{en,fr}`
 - **Favorites** and A/B song variants (same number, two versions).
 - **Live share (SharePlay-style)** — one device hosts and others on the same
   Wi‑Fi mirror the song + scroll position live; followers can scroll on their own
-  and like songs. Web devices can join via a link/address (see below).
+  and like songs. Idle devices on the network show an automatic **"session
+  nearby — Join"** banner (native; instant join). Scales to large rooms (~50+)
+  on a real Wi‑Fi router; web devices can join via a link/address. *(True
+  no‑Wi‑Fi phone‑to‑phone P2P is suited to small groups only and is not yet
+  shipped.)*
+- **About screen** (Settings → À propos) — explains the app, the public-domain
+  hymn sources, and the **missionnaire.net** ministry (apps, sermons, audio
+  music, more) with a link.
 
 ## Project layout
 
@@ -143,7 +152,8 @@ node store_shots.mjs        # writes ../store/{appstore,playstore}/{fr,en}/*.png
 
 ## Credits & license
 
-Hymn content © its respective authors, published by
-**[missionnaire.net](https://www.missionnaire.net/)**. This app is an
-independent offline reader for that content. Application code is released under
-the MIT License (see [`LICENSE`](LICENSE)).
+Hymns are drawn from **public-domain hymnals** and remain © their respective
+authors. This app is an independent, offline reader. For more — apps, sermons,
+audio music and other resources — visit the
+**[missionnaire.net](https://www.missionnaire.net/)** ministry. Application code
+is released under the MIT License (see [`LICENSE`](LICENSE)).
