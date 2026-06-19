@@ -82,7 +82,14 @@ function parsePage(html, series, fileNum) {
     // Artist / credit line (e.g. Impimbano "Fr Siméon") -> author.
     if (tag === 'div' && $el.hasClass('pr')) {
       const credit = clean($el.text());
-      if (cur && credit) {
+      // Some pages put a whole refrain/lyric block in a .pr div — reject those:
+      // a real credit is short and has no chorus markers ({...}, "x2", many · clauses).
+      const looksLikeLyrics =
+        credit.length > 60 ||
+        /[{}]/.test(credit) ||
+        /\bx\d\b/i.test(credit) ||
+        (credit.match(/·/g) || []).length >= 2;
+      if (cur && credit && !looksLikeLyrics) {
         cur.author = cur.author ? `${cur.author} · ${credit}` : credit;
       }
       return;
