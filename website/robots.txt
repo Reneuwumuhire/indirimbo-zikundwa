@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://reneuwumuhire.github.io/indirimbo-zikundwa/sitemap.xml

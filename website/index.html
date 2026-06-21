@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indirimbo Zikundwa — 5,495 hymns, fully offline</title>
+    <meta
+      name="description"
+      content="Indirimbo Zikundwa is a clean, offline-first hymnal reader for Android, iOS and the web. 5,495 Christian hymns across 17 public-domain collections in Kirundi, Kinyarwanda, Swahili and French — search by number, title, lyrics or artist, sing together over Wi-Fi, and read with a classic printed-hymnal layout. No account, no network needed."
+    />
+    <meta name="theme-color" content="#1f5c44" />
+    <meta name="author" content="Rene Uwumuhire" />
+    <meta
+      name="keywords"
+      content="indirimbo, indirimbo zikundwa, hymnal app, Kirundi hymns, Kinyarwanda hymns, Swahili hymns, French hymns, cantiques, offline hymn book, Agakiza, Umuco, Tenzi za Rohoni, missionnaire.net"
+    />
+    <link rel="canonical" href="https://reneuwumuhire.github.io/indirimbo-zikundwa/" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Indirimbo Zikundwa" />
+    <meta property="og:title" content="Indirimbo Zikundwa — 5,495 hymns, fully offline" />
+    <meta
+      property="og:description"
+      content="An offline-first hymnal reader: 5,495 hymns, 17 collections, 4 languages. Search, sing together over Wi-Fi, read like a printed book. No account, no network."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://reneuwumuhire.github.io/indirimbo-zikundwa/assets/shot-reader.png" />
+    <meta property="og:image:alt" content="The Indirimbo Zikundwa reader showing a hymn" />
+    <meta property="og:url" content="https://reneuwumuhire.github.io/indirimbo-zikundwa/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Indirimbo Zikundwa — 5,495 hymns, fully offline" />
+    <meta
+      name="twitter:description"
+      content="An offline-first hymnal reader: 5,495 hymns, 17 collections, 4 languages. Read, search and sing together — no network needed."
+    />
+    <meta name="twitter:image" content="https://reneuwumuhire.github.io/indirimbo-zikundwa/assets/shot-reader.png" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MobileApplication",
+        "name": "Indirimbo Zikundwa",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Android, iOS, Web",
+        "description": "A clean, offline-first hymnal reader bundling 5,495 public-domain Christian hymns across 17 collections in Kirundi, Kinyarwanda, Swahili and French. Search by number, title, lyrics or artist, sing together over Wi-Fi, and read with a classic printed-hymnal layout.",
+        "url": "https://reneuwumuhire.github.io/indirimbo-zikundwa/",
+        "downloadUrl": "https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases/latest",
+        "author": { "@type": "Person", "name": "Rene Uwumuhire", "url": "https://github.com/Reneuwumuhire" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="paper-grain" aria-hidden="true"></div>
+
+    <!-- ===== NAV ===== -->
+    <header class="nav">
+      <a class="nav-brand" href="#top">
+        <img src="assets/icon.png" alt="Indirimbo Zikundwa" class="nav-logo" />
+        <span class="brand-word">Indirimbo&nbsp;<span>Zikundwa</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#collections">Collections</a>
+        <a href="#offline">Offline</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-cta" href="#download">Get the app</a>
+      </nav>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <div class="pill">
+          <span class="dot"></span> Android · iOS · Web — fully offline
+        </div>
+        <h1>Every hymnal<br /><span class="grad">in your pocket.</span></h1>
+        <p class="lede">
+          <b>Indirimbo Zikundwa</b> bundles <b>5,495 Christian hymns</b> from
+          <b>17 public-domain collections</b> in Kirundi, Kinyarwanda, Swahili and
+          French — readable anywhere, with no account and no internet connection.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" id="hero-dl" href="#download">
+            Get the app
+            <span class="btn-sub">Android · iOS · Web</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/Reneuwumuhire/indirimbo-zikundwa" target="_blank" rel="noopener">
+            View source on GitHub
+          </a>
+        </div>
+        <ul class="trust-row">
+          <li>📖 5,495 songs</li>
+          <li>📡 Works offline</li>
+          <li>🌍 4 languages</li>
+          <li>🆓 Free &amp; open</li>
+        </ul>
+      </div>
+      <div class="hero-shot">
+        <img src="assets/shot-library.png" alt="Indirimbo Zikundwa library of hymn collections" />
+      </div>
+    </section>
+
+    <!-- ===== STRIP ===== -->
+    <section class="strip">
+      <div class="strip-item"><b>5,495</b><span>hymns bundled</span></div>
+      <div class="strip-item"><b>17</b><span>collections</span></div>
+      <div class="strip-item"><b>4</b><span>languages</span></div>
+      <div class="strip-item"><b>0</b><span>network calls</span></div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="section" id="features">
+      <p class="kicker">Why you'll love it</p>
+      <h2 class="section-title">A hymnal that travels with you</h2>
+      <p class="section-sub">
+        Built for the choir loft, the bus, the bush — anywhere the songs are
+        needed and the signal isn't.
+      </p>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-ic">📡</div>
+          <h3>Completely offline</h3>
+          <p>
+            The whole corpus is bundled inside the app as a local asset. Open it on
+            a plane, in a village, or with airplane mode on — every song is there,
+            instantly, with no network needed.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-ic">🔎</div>
+          <h3>Find any song in seconds</h3>
+          <p>
+            Search by <b>number, title, lyrics or artist</b> — across all 17 books
+            or within one. Collections that credit performers also offer an
+            <b>artist filter</b> to show just one singer's songs.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-ic">📜</div>
+          <h3>Reads like a printed hymnal</h3>
+          <p>
+            Verses and refrains break into proper hymn lines at the punctuation, so
+            songs read like a real printed book — warm parchment, a high-contrast
+            serif title, and a calm reading serif.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-ic">📶</div>
+          <h3>Sing together (live share)</h3>
+          <p>
+            One device hosts and everyone on the same Wi-Fi mirrors the song and
+            scroll position <b>live</b> — SharePlay-style. Idle phones nearby get a
+            one-tap <b>"join"</b> banner. Scales to a full room.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-ic">🅰️</div>
+          <h3>Make it yours</h3>
+          <p>
+            Nine selectable <b>font pairings</b> with live preview, three reading
+            themes (Light · Sepia · Dark), adjustable size and line spacing, plus
+            <b>pinch-to-zoom</b> and an optional keep-screen-on.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-ic">🌍</div>
+          <h3>Four languages, one app</h3>
+          <p>
+            Kirundi, Kinyarwanda, Swahili and Français — filter the library by
+            language, group and sort it your way, and switch the whole interface
+            between <b>Français and English</b>.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== SHOWCASE: READER ===== -->
+    <section class="showcase">
+      <div class="show-text">
+        <p class="kicker">The reader</p>
+        <h2>Designed to be read, and sung</h2>
+        <p>
+          Titles are normalised from shouting ALL-CAPS to gentle sentence case;
+          divine names stay capitalised. Verses and choruses are clearly labelled
+          and laid out line-by-line, the way a hymnal prints them — so your eye
+          never loses its place mid-verse.
+        </p>
+        <p>
+          Double-tap for distraction-free fullscreen, pinch to zoom the text, and
+          keep the screen awake while you sing. Favourite the songs you return to,
+          and flip between A/B variants when a hymn has two versions.
+        </p>
+      </div>
+      <div class="show-shot">
+        <img src="assets/shot-reader.png" alt="A hymn open in the Indirimbo Zikundwa reader" />
+      </div>
+    </section>
+
+    <!-- ===== SHOWCASE: LIVE SHARE (reversed) ===== -->
+    <section class="showcase reverse">
+      <div class="show-text">
+        <p class="kicker">Live share</p>
+        <h2>One songbook for the whole room</h2>
+        <p>
+          No more "what number are we on?" One phone leads; every device on the
+          same Wi-Fi follows the song and the scroll in real time. Followers can
+          still scroll ahead on their own, like a song, and rejoin the leader with
+          a tap.
+        </p>
+        <p>
+          Idle phones on the network see an automatic <b>"session nearby — Join"</b>
+          banner, so newcomers are in within seconds. It scales comfortably to large
+          gatherings on a real Wi-Fi router, and web devices can join from a link.
+        </p>
+      </div>
+      <div class="show-shot">
+        <img src="assets/shot-share.png" alt="A live shared singing session in Indirimbo Zikundwa" />
+      </div>
+    </section>
+
+    <!-- ===== COLLECTIONS ===== -->
+    <section class="section" id="collections">
+      <p class="kicker">The corpus</p>
+      <h2 class="section-title">17 collections, one library</h2>
+      <p class="section-sub">
+        Classic public-domain hymnals across four languages — each with its own
+        deep book-spine colour on the shelf.
+      </p>
+      <div class="book-row">
+        <span class="book" style="--c:#6e2230">Umuco 1</span>
+        <span class="book" style="--c:#5a3a52">Umuco 2</span>
+        <span class="book" style="--c:#4a3220">Ikirundi</span>
+        <span class="book" style="--c:#2f3a52">Iz'i Gisenyi</span>
+        <span class="book" style="--c:#7a3b1e">Gushimisha</span>
+        <span class="book" style="--c:#6e2230">Agakiza</span>
+        <span class="book" style="--c:#3a5142">Wokovu</span>
+        <span class="book" style="--c:#4a3220">Nyimbo za Mungu</span>
+        <span class="book" style="--c:#5a2436">Tenzi za Rohoni</span>
+        <span class="book" style="--c:#2f3a52">Les Ailes de la Foi</span>
+        <span class="book" style="--c:#7a3b1e">Chants de Victoire</span>
+        <span class="book" style="--c:#3a4a5a">Coll. des Cantiques</span>
+        <span class="book" style="--c:#6e2230">Crois Seulement</span>
+        <span class="book" style="--c:#4a3220">Impimbano</span>
+        <span class="book" style="--c:#5a3a52">Chorus</span>
+        <span class="book" style="--c:#3a5142">Izindi…</span>
+      </div>
+      <p class="collections-note">
+        The songs come from various public-domain hymnals. Indirimbo Zikundwa is an
+        independent reader connected to the
+        <a href="https://www.missionnaire.net/" target="_blank" rel="noopener">missionnaire.net</a>
+        ministry — where you'll also find sermons, audio music and more resources.
+      </p>
+    </section>
+
+    <!-- ===== OFFLINE / TRUST ===== -->
+    <section class="section how" id="offline">
+      <p class="kicker">Calm by design</p>
+      <h2 class="section-title">No account. No tracking. No signal required.</h2>
+      <div class="how-grid">
+        <div class="how-item">
+          <div class="how-num">Offline</div>
+          <p>Every song is bundled locally. The app makes no network calls to read,
+            search or share within the room.</p>
+        </div>
+        <div class="how-item">
+          <div class="how-num">Private</div>
+          <p>No sign-up, no analytics, no profile. Your favourites and settings
+            stay on your device.</p>
+        </div>
+        <div class="how-item">
+          <div class="how-num">Open</div>
+          <p>The full Flutter source is on GitHub — read exactly how the dataset and
+            sharing work.</p>
+        </div>
+        <div class="how-item">
+          <div class="how-num">Free</div>
+          <p>Free to use, on Android, iOS and the web. Built to serve, not to
+            monetise.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DOWNLOAD ===== -->
+    <section class="download" id="download">
+      <div class="dl-card">
+        <img src="assets/icon.png" alt="Indirimbo Zikundwa" class="dl-icon" />
+        <h2>Get Indirimbo Zikundwa</h2>
+        <p>Free · Android, iOS &amp; the web · 5,495 hymns bundled offline</p>
+
+        <div class="dl-grid">
+          <a class="dl-platform" id="dl-android" href="https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases/latest" target="_blank" rel="noopener">
+            <span class="dl-os">🤖 Android</span>
+            <b>Download the APK</b>
+            <span class="dl-state" id="state-android">Build coming soon</span>
+          </a>
+          <a class="dl-platform" id="dl-ios" href="https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases/latest" target="_blank" rel="noopener">
+            <span class="dl-os"> iOS</span>
+            <b>iPhone &amp; iPad</b>
+            <span class="dl-state" id="state-ios">Build coming soon</span>
+          </a>
+          <a class="dl-platform" id="dl-web" href="https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases/latest" target="_blank" rel="noopener">
+            <span class="dl-os">🌐 Web app</span>
+            <b>Open in a browser</b>
+            <span class="dl-state" id="state-web">Build coming soon</span>
+          </a>
+        </div>
+
+        <p class="dl-note">
+          Release builds are published on
+          <a href="https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases" target="_blank" rel="noopener">GitHub Releases</a>.
+          The buttons above automatically point to the latest <code>.apk</code>, iOS
+          and web builds as soon as they're uploaded — until then they link to the
+          releases page.
+        </p>
+        <a class="dl-alt" href="https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases" target="_blank" rel="noopener">All releases →</a>
+      </div>
+    </section>
+
+    <!-- ===== GALLERY ===== -->
+    <section class="section gallery-sec">
+      <p class="kicker">A closer look</p>
+      <h2 class="section-title">See it in action</h2>
+      <div class="gallery">
+        <img src="assets/shot-library.png" alt="Library of hymn collections" />
+        <img src="assets/shot-reader.png" alt="Reading a hymn" />
+        <img src="assets/shot-share.png" alt="Live shared session" />
+        <img src="assets/shot-fonts.png" alt="Choosing a font pairing" />
+        <img src="assets/shot-languages.png" alt="Four languages in one app" />
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section" id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq">
+        <details>
+          <summary>Does it really work without internet?</summary>
+          <p>
+            Yes. All 5,495 songs are bundled inside the app as a local asset, so
+            reading and searching never touch the network. Only the optional
+            "sing together" feature uses your local Wi-Fi — and even that stays on
+            your own network.
+          </p>
+        </details>
+        <details>
+          <summary>Which languages are included?</summary>
+          <p>
+            Hymns in <b>Kirundi, Kinyarwanda, Swahili and Français</b>, plus combined
+            collections. The interface itself can be switched between Français and
+            English.
+          </p>
+        </details>
+        <details>
+          <summary>Where do the songs come from?</summary>
+          <p>
+            From various <b>public-domain hymnals</b> — Umuco, Ikirundi, Agakiza,
+            Tenzi za Rohoni, Les Ailes de la Foi, Chants de Victoire and more. The
+            app is an independent reader connected to the
+            <a href="https://www.missionnaire.net/" target="_blank" rel="noopener">missionnaire.net</a>
+            ministry.
+          </p>
+        </details>
+        <details>
+          <summary>How does "sing together" work?</summary>
+          <p>
+            One device hosts a session; others on the same Wi-Fi mirror the song and
+            scroll position live, and can like songs or scroll ahead on their own.
+            Nearby idle phones get an automatic one-tap join banner. It scales to
+            large rooms on a real router.
+          </p>
+        </details>
+        <details>
+          <summary>Do I need an account?</summary>
+          <p>No. There's no sign-up, no tracking and no analytics. Your favourites
+            and settings live only on your device.</p>
+        </details>
+        <details>
+          <summary>Where can I download it?</summary>
+          <p>
+            Builds are published on
+            <a href="https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases" target="_blank" rel="noopener">GitHub Releases</a>.
+            The download buttons above auto-link to the latest Android, iOS and web
+            builds as soon as they're available.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="foot-brand">
+        <img src="assets/favicon.png" alt="" />
+        <span class="brand-word">Indirimbo&nbsp;<span>Zikundwa</span></span>
+      </div>
+      <p class="foot-by">
+        Made by <a href="https://github.com/Reneuwumuhire" target="_blank" rel="noopener">Rene&nbsp;Uwumuhire</a> ·
+        <a href="https://github.com/Reneuwumuhire/indirimbo-zikundwa" target="_blank" rel="noopener">GitHub</a> ·
+        connected to <a href="https://www.missionnaire.net/" target="_blank" rel="noopener">missionnaire.net</a>
+      </p>
+      <p class="foot-fine">
+        Hymn texts are public domain. Indirimbo Zikundwa is an independent reader and
+        is not the official app of any single hymnal publisher.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
