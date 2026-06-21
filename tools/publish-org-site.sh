@@ -61,7 +61,7 @@ for f in index.html privacy.html terms.html sitemap.xml robots.txt README.md; do
 done
 
 git add -A
-git -c user.name="Rene Uwumuhire" -c user.email="bajustone@gmail.com" \
+git -c user.name="Rene Uwumuhire" -c user.email="reneuwumuhire@gmail.com" \
     commit -q -m "Publish Indirimbo Zikundwa site" || echo "  (no changes to commit)"
 git branch -M main
 echo "▶ Pushing to ${REPO}…"
