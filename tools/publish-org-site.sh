@@ -46,9 +46,10 @@ fi
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 echo "▶ Preparing site contents…"
-git clone --quiet "https://github.com/$REPO.git" "$TMP/site" 2>/dev/null || {
+# Use SSH for the org repo — HTTPS pushes here hit intermittent connection resets.
+git clone --quiet "git@github.com:$REPO.git" "$TMP/site" 2>/dev/null || {
   mkdir -p "$TMP/site" && cd "$TMP/site" && git init -q && \
-  git remote add origin "https://github.com/$REPO.git"
+  git remote add origin "git@github.com:$REPO.git"
 }
 cd "$TMP/site"
 
