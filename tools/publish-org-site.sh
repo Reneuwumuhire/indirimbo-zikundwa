@@ -63,7 +63,7 @@ git add -A
 git -c user.name="Rene Uwumuhire" -c user.email="bajustone@gmail.com" \
     commit -q -m "Publish Indirimbo Zikundwa site" || echo "  (no changes to commit)"
 git branch -M main
-echo "▶ Pushing to $REPO…"
+echo "▶ Pushing to ${REPO}…"
 git push -u origin main --force
 
 echo "▶ Enabling GitHub Pages…"
