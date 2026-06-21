@@ -241,6 +241,36 @@ code {
 .foot-by { color: var(--ink-dim); font-size: 14px; }
 .foot-fine { color: rgba(124, 111, 94, 0.85); font-size: 12.5px; margin-top: 10px; max-width: 40em; margin-left: auto; margin-right: auto; }
 
+/* ===== Legal pages (privacy / terms) ===== */
+.legal { max-width: 760px; margin: 0 auto; padding: clamp(40px, 7vw, 72px) clamp(16px, 5vw, 40px) 20px; }
+.legal-head { text-align: center; margin-bottom: 40px; }
+.legal-head h1 { font-family: var(--serif); font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -0.6px; color: var(--ink); }
+.legal-updated { color: var(--ink-dim); font-size: 13.5px; margin-top: 10px; }
+.legal-tldr {
+  background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 12px; padding: 18px 22px; margin: 0 auto 36px; color: var(--ink-soft); font-size: 15px;
+}
+.legal-tldr b { color: var(--ink); }
+.legal article h2 {
+  font-family: var(--serif); font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; color: var(--ink);
+  margin: 38px 0 12px; letter-spacing: -0.3px;
+}
+.legal article h2:first-child { margin-top: 0; }
+.legal article p { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 14px; }
+.legal article ul { color: var(--ink-soft); font-size: 15.5px; margin: 0 0 16px; padding-left: 22px; }
+.legal article li { margin-bottom: 8px; }
+.legal article a { color: var(--accent-deep); font-weight: 600; }
+.legal article a:hover { text-decoration: underline; }
+.legal-back {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 8px;
+  color: var(--accent-deep); font-weight: 600; font-size: 14.5px;
+}
+.legal-back:hover { text-decoration: underline; }
+.foot-legal { margin-top: 12px; font-size: 13px; }
+.foot-legal a { color: var(--ink-dim); font-weight: 500; }
+.foot-legal a:hover { color: var(--ink); }
+.foot-sep { color: var(--line); margin: 0 8px; }
+
 /* Reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.in { opacity: 1; transform: none; }
