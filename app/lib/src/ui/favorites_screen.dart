@@ -64,10 +64,10 @@ class FavoritesScreen extends ConsumerWidget {
           Icon(Icons.favorite_border, size: 46, color: c.withValues(alpha: 0.55)),
           const SizedBox(height: 12),
           Text(t.favEmptyTitle,
-              style: TextStyle(fontFamily: AppFonts.body, color: c)),
+              style: TextStyle(fontFamily: AppFonts.uiBody, color: c)),
           const SizedBox(height: 4),
           Text(t.favEmptyHint,
-              style: TextStyle(fontFamily: AppFonts.body, color: c, fontSize: 13)),
+              style: TextStyle(fontFamily: AppFonts.uiBody, color: c, fontSize: 13)),
         ],
       ),
     );

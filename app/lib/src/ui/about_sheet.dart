@@ -51,11 +51,11 @@ class _AboutSheet extends ConsumerWidget {
             const SizedBox(height: 14),
             Text(t.aboutAppBody,
                 style: TextStyle(
-                    fontFamily: AppFonts.body, fontSize: 15, height: 1.5, color: reader.verseText)),
+                    fontFamily: AppFonts.uiBody, fontSize: 15, height: 1.5, color: reader.verseText)),
             const SizedBox(height: 10),
             Text(t.aboutSourceNote,
                 style: TextStyle(
-                    fontFamily: AppFonts.body, fontSize: 13, height: 1.45, color: reader.muted)),
+                    fontFamily: AppFonts.uiBody, fontSize: 13, height: 1.45, color: reader.muted)),
             const SizedBox(height: 20),
             Divider(color: reader.hairline),
             const SizedBox(height: 16),
@@ -64,7 +64,7 @@ class _AboutSheet extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(t.aboutSiteBody,
                 style: TextStyle(
-                    fontFamily: AppFonts.body, fontSize: 14.5, height: 1.5, color: reader.verseText)),
+                    fontFamily: AppFonts.uiBody, fontSize: 14.5, height: 1.5, color: reader.verseText)),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
@@ -78,7 +78,7 @@ class _AboutSheet extends ConsumerWidget {
                 onPressed: () => _open(context),
                 icon: const Icon(Icons.open_in_new_rounded, size: 18),
                 label: Text(t.visitSite,
-                    style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.w700)),
+                    style: TextStyle(fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w700)),
               ),
             ),
             const SizedBox(height: 8),

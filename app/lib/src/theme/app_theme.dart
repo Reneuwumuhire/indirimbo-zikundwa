@@ -24,8 +24,13 @@ extension AppThemeModeX on AppThemeMode {
 
 class AppFonts {
   static const heading = 'Playfair Display'; // display titles
-  static const body = 'Spectral'; // reading + UI serif
+  static const body = 'Spectral'; // default reading + UI serif
   static const mono = 'Space Mono'; // labels, numbers, metadata
+
+  /// The user-selected app (UI) body font. Defaults to [body]; kept in sync
+  /// with the `appFont` setting in main() so inline `AppFonts.uiBody` styles
+  /// across the UI follow the user's choice. (Song lyrics use the font combo.)
+  static String uiBody = body;
 }
 
 /// Colours used by the reader and lists beyond the base ColorScheme.
@@ -116,10 +121,11 @@ class AppTheme {
   /// A darker shade for the book spine.
   static Color spineOf(Color c) => Color.alphaBlend(Colors.black.withValues(alpha: 0.26), c);
 
-  static ThemeData of(AppThemeMode mode) => switch (mode) {
-        AppThemeMode.normal => _normal,
-        AppThemeMode.sepia => _sepia,
-        AppThemeMode.dark => _dark,
+  static ThemeData of(AppThemeMode mode, {String uiFont = AppFonts.body}) =>
+      switch (mode) {
+        AppThemeMode.normal => _normal(uiFont),
+        AppThemeMode.sepia => _sepia(uiFont),
+        AppThemeMode.dark => _dark(uiFont),
       };
 
   static ThemeData _build({
@@ -130,6 +136,7 @@ class AppTheme {
     required Color heading,
     required Color accent,
     required ReaderPalette reader,
+    String uiFont = AppFonts.body,
   }) {
     final scheme = ColorScheme.fromSeed(
       seedColor: accent,
@@ -147,7 +154,7 @@ class AppTheme {
 
     final textTheme = base.textTheme
         .apply(
-          fontFamily: AppFonts.body,
+          fontFamily: uiFont,
           bodyColor: onSurface,
           displayColor: heading,
         )
@@ -179,7 +186,8 @@ class AppTheme {
             letterSpacing: 1.5,
             fontWeight: FontWeight.w700,
             color: onSurface.withValues(alpha: 0.7)),
-        iconTheme: IconThemeData(color: onSurface.withValues(alpha: 0.8)),
+        iconTheme: IconThemeData(
+            color: onSurface.withValues(alpha: 0.8), applyTextScaling: true),
       ),
       cardTheme: CardThemeData(
         color: surface,
@@ -200,6 +208,7 @@ class AppTheme {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         iconTheme: WidgetStateProperty.resolveWith((s) => IconThemeData(
               size: 22,
+              applyTextScaling: true,
               color: s.contains(WidgetState.selected) ? accent : onSurface.withValues(alpha: 0.5),
             )),
         labelTextStyle: WidgetStateProperty.resolveWith((s) => TextStyle(
@@ -227,14 +236,15 @@ class AppTheme {
         side: WidgetStatePropertyAll(BorderSide(color: reader.hairline)),
         shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
         hintStyle: WidgetStatePropertyAll(
-            TextStyle(fontFamily: AppFonts.body, fontSize: 15, color: onSurface.withValues(alpha: 0.5))),
-        textStyle: WidgetStatePropertyAll(TextStyle(fontFamily: AppFonts.body, color: onSurface)),
+            TextStyle(fontFamily: uiFont, fontSize: 15, color: onSurface.withValues(alpha: 0.5))),
+        textStyle: WidgetStatePropertyAll(TextStyle(fontFamily: uiFont, color: onSurface)),
       ),
       extensions: [reader],
     );
   }
 
-  static final ThemeData _normal = _build(
+  static ThemeData _normal(String uiFont) => _build(
+    uiFont: uiFont,
     brightness: Brightness.light,
     scaffold: const Color(0xFFEDE7DA),
     surface: const Color(0xFFE7E0D0),
@@ -252,7 +262,8 @@ class AppTheme {
     ),
   );
 
-  static final ThemeData _sepia = _build(
+  static ThemeData _sepia(String uiFont) => _build(
+    uiFont: uiFont,
     brightness: Brightness.light,
     scaffold: const Color(0xFFE9DEC8),
     surface: const Color(0xFFE3D7BE),
@@ -270,7 +281,8 @@ class AppTheme {
     ),
   );
 
-  static final ThemeData _dark = _build(
+  static ThemeData _dark(String uiFont) => _build(
+    uiFont: uiFont,
     brightness: Brightness.dark,
     scaffold: const Color(0xFF1A1714),
     surface: const Color(0xFF231F1A),

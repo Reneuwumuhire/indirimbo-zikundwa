@@ -124,7 +124,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontFamily: AppFonts.body,
+                                      fontFamily: AppFonts.uiBody,
                                       fontSize: 13.5,
                                       fontWeight: FontWeight.w600,
                                       color: _artist == null ? reader.muted : theme.colorScheme.primary)),
@@ -138,7 +138,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                       TextButton(
                         onPressed: () => setState(() => _artist = null),
                         child: Text(t.allArtists,
-                            style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12)),
+                            style: TextStyle(fontFamily: AppFonts.uiBody, fontSize: 12)),
                       )
                     else
                       Text(t.artistsCount(artists.length),
@@ -153,7 +153,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
               child: songs.isEmpty
                   ? Center(
                       child: Text(t.noResults,
-                          style: TextStyle(fontFamily: AppFonts.body, color: reader.muted)))
+                          style: TextStyle(fontFamily: AppFonts.uiBody, color: reader.muted)))
                   : ListView.separated(
                       padding: const EdgeInsets.only(bottom: 16),
                       itemCount: songs.length,
@@ -177,7 +177,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
         Flexible(
           child: Text(label,
               style: TextStyle(
-                  fontFamily: AppFonts.body,
+                  fontFamily: AppFonts.uiBody,
                   color: theme.colorScheme.onSurface,
                   fontWeight: selected ? FontWeight.w700 : FontWeight.w400)),
         ),

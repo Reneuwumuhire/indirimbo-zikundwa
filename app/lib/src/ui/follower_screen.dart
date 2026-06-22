@@ -124,7 +124,7 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2.4)),
                           const SizedBox(height: 16),
                           Text(t.shareWaiting,
-                              style: TextStyle(fontFamily: AppFonts.body, color: palette.muted)),
+                              style: TextStyle(fontFamily: AppFonts.uiBody, color: palette.muted)),
                         ],
                       ),
                     )
@@ -154,7 +154,7 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
                               Text(
                                 '${repo!.collection(song.series).name} · N° ${song.label}',
                                 style: TextStyle(
-                                  fontFamily: AppFonts.body,
+                                  fontFamily: AppFonts.uiBody,
                                   fontSize: 12.5,
                                   letterSpacing: 0.8,
                                   fontWeight: FontWeight.w700,
@@ -174,7 +174,7 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
                                 const SizedBox(height: 10),
                                 Text(song.author!,
                                     style: TextStyle(
-                                        fontFamily: AppFonts.body,
+                                        fontFamily: AppFonts.uiBody,
                                         fontSize: 13.5,
                                         fontStyle: FontStyle.italic,
                                         color: palette.muted)),
@@ -298,8 +298,8 @@ class _FollowerHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(liveLabel,
-                        style: const TextStyle(
-                            fontFamily: AppFonts.body,
+                        style: TextStyle(
+                            fontFamily: AppFonts.uiBody,
                             fontSize: 10,
                             letterSpacing: 1.4,
                             fontWeight: FontWeight.w800,
@@ -351,7 +351,7 @@ class _Banner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Text(text,
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: AppFonts.body, fontSize: 12.5, color: color)),
+          style: TextStyle(fontFamily: AppFonts.uiBody, fontSize: 12.5, color: color)),
     );
   }
 }

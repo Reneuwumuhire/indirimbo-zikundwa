@@ -1,9 +1,10 @@
-// Loads the bundled hymn dataset once and answers in-memory queries.
-// The full corpus (~2,800 songs) fits comfortably in memory, so search and
-// lookups are instant and fully offline — no database needed.
+// Loads the hymn dataset once and answers in-memory queries. The corpus ships
+// gzip-compressed and is decoded at load (see dataset_source.dart), preferring
+// an OTA-updated copy over the bundled asset when one is cached.
 
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dataset_source.dart';
 import 'models.dart';
 
 class HymnRepository {
@@ -13,8 +14,8 @@ class HymnRepository {
   final Map<String, Song> _byId;
   final Map<String, List<Song>> _bySeries;
 
-  static Future<HymnRepository> load() async {
-    final raw = await rootBundle.loadString('assets/data/hymns.json');
+  static Future<HymnRepository> load(SharedPreferences prefs) async {
+    final raw = await loadDatasetJson(prefs);
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     final collections = (json['collections'] as List<dynamic>)

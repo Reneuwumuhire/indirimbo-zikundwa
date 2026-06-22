@@ -15,6 +15,11 @@ dependencies:
   web_socket_channel: ^3.0.0
   wakelock_plus: ^1.2.8
   url_launcher: ^6.3.0
+  bonsoir: ^7.0.0
+  share_plus: ^13.1.0
+  http: ^1.6.0
+  path_provider: ^2.1.6
+  archive: ^4.0.9
 
 dev_dependencies:
   flutter_test:
@@ -40,7 +45,9 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/data/hymns.json
+    # Gzip-compressed (~1.7 MB vs 11 MB) and decoded at load — keeps the app
+    # download small. The raw hymns.json stays in the repo for tests/tooling.
+    - assets/data/hymns.json.gz
 
   fonts:
     # UI typography — bundled Google Fonts (offline). Classic hymnal look:

@@ -24,18 +24,17 @@ class ReaderControls extends ConsumerWidget {
       children: [
         _label(context, t.themeSection),
         const SizedBox(height: 10),
-        Row(
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
           children: [
             for (final m in AppThemeMode.values)
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: ChoiceChip(
-                  selected: s.themeMode == m,
-                  onSelected: (_) => ctrl.setTheme(m),
-                  avatar: Icon(m.icon, size: 18,
-                      color: s.themeMode == m ? theme.colorScheme.primary : reader.muted),
-                  label: Text(t.themeModeName(m)),
-                ),
+              ChoiceChip(
+                selected: s.themeMode == m,
+                onSelected: (_) => ctrl.setTheme(m),
+                avatar: Icon(m.icon, size: 18,
+                    color: s.themeMode == m ? theme.colorScheme.primary : reader.muted),
+                label: Text(t.themeModeName(m)),
               ),
           ],
         ),
@@ -106,15 +105,18 @@ class ReaderControls extends ConsumerWidget {
       children: [
         Icon(icon, size: 20, color: theme.colorScheme.primary),
         const SizedBox(width: 12),
-        Text(label, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 15)),
-        const Spacer(),
+        Expanded(
+          child: Text(label,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AppFonts.uiBody, fontSize: 15)),
+        ),
         IconButton.filledTonal(onPressed: onMinus, icon: const Icon(Icons.remove), iconSize: 18),
         SizedBox(
             width: 46,
             child: Text(value,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontFamily: AppFonts.body, fontWeight: FontWeight.w700, fontSize: 15))),
+                style: TextStyle(
+                    fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w700, fontSize: 15))),
         IconButton.filledTonal(onPressed: onPlus, icon: const Icon(Icons.add), iconSize: 18),
       ],
     );

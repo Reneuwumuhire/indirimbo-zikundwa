@@ -23,10 +23,26 @@ class IndirimboApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(settingsProvider.select((s) => s.themeMode));
+    final uiFont = ref.watch(settingsProvider.select((s) => s.appFont));
+    final textScale = ref.watch(settingsProvider.select((s) => s.appTextScale));
+    // Keep inline `AppFonts.uiBody` styles across the UI in sync with the choice
+    // (the theme covers themed text; this covers the many inline TextStyles).
+    AppFonts.uiBody = uiFont;
     return MaterialApp(
       title: 'Indirimbo Zikundwa',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.of(mode),
+      theme: AppTheme.of(mode, uiFont: uiFont),
+      // Apply the user's app-wide text size to every screen. Song lyrics opt out
+      // of this in the reader (they have their own size control). Icons follow
+      // the same scale via applyTextScaling, so they grow with the text.
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: TextScaler.linear(textScale)),
+        child: IconTheme.merge(
+          data: const IconThemeData(applyTextScaling: true),
+          child: child!,
+        ),
+      ),
       home: const RootShell(),
     );
   }

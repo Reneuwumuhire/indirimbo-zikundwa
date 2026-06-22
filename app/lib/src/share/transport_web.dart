@@ -10,7 +10,8 @@ import 'ws_client.dart';
 bool get canHostSessions => false;
 bool get canJoinSessions => true;
 
-Future<ShareHost> startHost({required String name, required SharedView initial}) =>
+Future<ShareHost> startHost(
+        {required String name, required SharedView initial, SharedSong? initialSong}) =>
     throw UnsupportedError('Hosting a session is not available on the web.');
 
 Future<ShareClient> connectClient(DiscoveredSession session) => openWsClient(session);

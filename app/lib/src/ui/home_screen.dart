@@ -154,7 +154,7 @@ class _Masthead extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(t.splashSub,
                     style: TextStyle(
-                        fontFamily: AppFonts.body,
+                        fontFamily: AppFonts.uiBody,
                         fontStyle: FontStyle.italic,
                         fontSize: 14.5,
                         color: reader.muted)),
@@ -227,7 +227,7 @@ class _Subhead extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(_sortLabel(s),
                           style: TextStyle(
-                              fontFamily: AppFonts.body,
+                              fontFamily: AppFonts.uiBody,
                               color: theme.colorScheme.onSurface,
                               fontWeight: s == sort ? FontWeight.w700 : FontWeight.w400)),
                     ],
@@ -290,7 +290,8 @@ class _FilterChips extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 38,
+      // Grow with the app text scale so the labels never clip.
+      height: MediaQuery.textScalerOf(context).scale(38),
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),

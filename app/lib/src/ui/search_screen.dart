@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,11 +18,28 @@ class SearchScreen extends ConsumerStatefulWidget {
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final _controller = TextEditingController();
+  Timer? _debounce;
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _controller.dispose();
     super.dispose();
+  }
+
+  // Debounce keystrokes so the full-corpus search runs at most every ~180ms
+  // instead of on every character — keeps typing smooth on large books.
+  void _onChanged(String v) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 180), () {
+      if (mounted) ref.read(searchQueryProvider.notifier).state = v;
+    });
+  }
+
+  void _clear() {
+    _debounce?.cancel();
+    _controller.clear();
+    ref.read(searchQueryProvider.notifier).state = '';
   }
 
   @override
@@ -51,13 +70,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   if (hasQuery)
                     IconButton(
                       icon: Icon(Icons.close, color: reader.muted),
-                      onPressed: () {
-                        _controller.clear();
-                        ref.read(searchQueryProvider.notifier).state = '';
-                      },
+                      onPressed: _clear,
                     ),
                 ],
-                onChanged: (v) => ref.read(searchQueryProvider.notifier).state = v,
+                onChanged: _onChanged,
               ),
             ),
             if (hasQuery)
@@ -67,7 +83,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   alignment: Alignment.centerLeft,
                   child: Text(t.results(results.length),
                       style: TextStyle(
-                          fontFamily: AppFonts.body, fontSize: 12.5, color: reader.muted)),
+                          fontFamily: AppFonts.uiBody, fontSize: 12.5, color: reader.muted)),
                 ),
               ),
             Expanded(
@@ -103,7 +119,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               size: 46, color: reader.muted.withValues(alpha: 0.55)),
           const SizedBox(height: 12),
           Text(empty ? t.noResults : t.searchPrompt,
-              style: TextStyle(fontFamily: AppFonts.body, color: reader.muted)),
+              style: TextStyle(fontFamily: AppFonts.uiBody, color: reader.muted)),
         ],
       ),
     );

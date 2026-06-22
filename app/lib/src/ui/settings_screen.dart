@@ -39,16 +39,15 @@ class SettingsScreen extends ConsumerWidget {
             _card(
               theme,
               reader,
-              child: Row(
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
                 children: [
                   for (final l in AppLanguage.values)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: ChoiceChip(
-                        selected: settings.language == l,
-                        onSelected: (_) => ctrl.setLanguage(l),
-                        label: Text(l.label),
-                      ),
+                    ChoiceChip(
+                      selected: settings.language == l,
+                      onSelected: (_) => ctrl.setLanguage(l),
+                      label: Text(l.label),
                     ),
                 ],
               ),
@@ -111,6 +110,12 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 22),
 
+            // App text (global font + size for the whole UI)
+            _sectionLabel(context, reader, t.appTextSection),
+            const SizedBox(height: 10),
+            _card(theme, reader, child: _appTextControls(theme, reader, t, settings, ctrl)),
+            const SizedBox(height: 22),
+
             // Reading display
             _sectionLabel(context, reader, t.display),
             const SizedBox(height: 10),
@@ -130,12 +135,12 @@ class SettingsScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(t.keepScreenOn,
-                                style: const TextStyle(
-                                    fontFamily: AppFonts.body, fontWeight: FontWeight.w600, fontSize: 15)),
+                                style: TextStyle(
+                                    fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w600, fontSize: 15)),
                             const SizedBox(height: 2),
                             Text(t.keepScreenOnHint,
                                 style: TextStyle(
-                                    fontFamily: AppFonts.body, fontSize: 12.5, color: reader.muted)),
+                                    fontFamily: AppFonts.uiBody, fontSize: 12.5, color: reader.muted)),
                           ],
                         ),
                       ),
@@ -153,7 +158,7 @@ class SettingsScreen extends ConsumerWidget {
                       Expanded(
                         child: Text(t.fullscreenHint,
                             style: TextStyle(
-                                fontFamily: AppFonts.body, fontSize: 12.5, height: 1.4, color: reader.muted)),
+                                fontFamily: AppFonts.uiBody, fontSize: 12.5, height: 1.4, color: reader.muted)),
                       ),
                     ],
                   ),
@@ -227,14 +232,14 @@ class SettingsScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(t.shareTitle,
-                        style: const TextStyle(
-                            fontFamily: AppFonts.body, fontWeight: FontWeight.w700, fontSize: 15)),
+                        style: TextStyle(
+                            fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w700, fontSize: 15)),
                     const SizedBox(height: 2),
                     Text(status,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontFamily: AppFonts.body, fontSize: 12.5, color: statusColor)),
+                            fontFamily: AppFonts.uiBody, fontSize: 12.5, color: statusColor)),
                   ],
                 ),
               ),
@@ -289,6 +294,79 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
+  Widget _appTextControls(ThemeData theme, ReaderPalette reader, Strings t,
+      ReaderSettings settings, SettingsController ctrl) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(t.appTextHint,
+            style: TextStyle(
+                fontFamily: AppFonts.uiBody, fontSize: 12.5, height: 1.4, color: reader.muted)),
+        const SizedBox(height: 16),
+        Text(t.fontSection.toUpperCase(),
+            style: TextStyle(
+                fontFamily: AppFonts.mono,
+                fontSize: 10,
+                letterSpacing: 1.2,
+                fontWeight: FontWeight.w700,
+                color: reader.muted)),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final f in readerFonts)
+              ChoiceChip(
+                selected: settings.appFont == f,
+                onSelected: (_) => ctrl.setAppFont(f),
+                label: Text(f, style: TextStyle(fontFamily: f, fontSize: 13)),
+              ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        Row(
+          children: [
+            Icon(Icons.format_size_rounded, size: 20, color: theme.colorScheme.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(t.textSize,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontFamily: AppFonts.uiBody, fontSize: 15)),
+            ),
+            IconButton.filledTonal(
+                onPressed: () => ctrl.setAppTextScale(settings.appTextScale - 0.05),
+                icon: const Icon(Icons.remove),
+                iconSize: 18),
+            SizedBox(
+              width: 58,
+              child: Text('${(settings.appTextScale * 100).round()}%',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w700, fontSize: 15)),
+            ),
+            IconButton.filledTonal(
+                onPressed: () => ctrl.setAppTextScale(settings.appTextScale + 0.05),
+                icon: const Icon(Icons.add),
+                iconSize: 18),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: ctrl.isAppTextDefault ? null : ctrl.resetAppText,
+            icon: const Icon(Icons.restart_alt_rounded, size: 18),
+            label: Text(t.resetDefaults),
+            style: TextButton.styleFrom(
+              foregroundColor: theme.colorScheme.primary,
+              textStyle: TextStyle(fontFamily: AppFonts.uiBody, fontSize: 13),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _sectionLabel(BuildContext context, ReaderPalette reader, String text) =>
       Text(text.toUpperCase(),
           style: TextStyle(
@@ -334,7 +412,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(label,
                 style: TextStyle(
-                    fontFamily: AppFonts.body,
+                    fontFamily: AppFonts.uiBody,
                     fontWeight: FontWeight.w600,
                     color: selected ? accent : theme.colorScheme.onSurface)),
           ],
@@ -354,9 +432,9 @@ class SettingsScreen extends ConsumerWidget {
       onTap: onTap,
       leading: Icon(icon, color: theme.colorScheme.primary),
       title: Text(title,
-          style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.w600)),
+          style: TextStyle(fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w600)),
       subtitle: Text(subtitle,
-          style: TextStyle(fontFamily: AppFonts.body, color: reader.muted, fontSize: 13)),
+          style: TextStyle(fontFamily: AppFonts.uiBody, color: reader.muted, fontSize: 13)),
       trailing: trailing,
     );
   }

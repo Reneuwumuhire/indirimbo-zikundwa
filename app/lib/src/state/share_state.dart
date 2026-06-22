@@ -9,7 +9,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/models.dart';
 import '../share/transport.dart';
+import 'providers.dart';
 
 enum ShareRole { none, host, follower }
 
@@ -100,17 +102,42 @@ class ShareController extends Notifier<ShareSession> {
   ShareClient? _client;
   final _subs = <StreamSubscription>[];
 
+  /// The song currently broadcast to followers — so we only resend full lyrics
+  /// when the song actually changes (scroll updates stay light).
+  String? _hostedSongId;
+
   @override
   ShareSession build() {
     ref.onDispose(_teardown);
     return const ShareSession();
   }
 
+  /// Resolve a song's full content from the bundled hymnal so the browser
+  /// follow-along page can render it. Null if the repository isn't ready.
+  SharedSong? _songFor(String songId) {
+    final repo = ref.read(repositoryProvider).valueOrNull;
+    final song = repo?.byId(songId);
+    if (repo == null || song == null) return null;
+    return SharedSong(
+      songId: song.id,
+      label: song.label,
+      title: song.displayTitle,
+      collectionName: repo.collection(song.series).name,
+      author: song.author,
+      stanzas: [
+        for (final s in song.stanzas)
+          SharedStanza(chorus: s.type == StanzaType.chorus, text: s.text),
+      ],
+    );
+  }
+
   /// Begin hosting; followers will mirror [initial] until [updateHostView].
   Future<void> startHosting(SharedView initial, {required String name}) async {
     await _teardown();
     try {
-      final host = await startHost(name: name, initial: initial);
+      final initialSong = _songFor(initial.songId);
+      _hostedSongId = initialSong != null ? initial.songId : null;
+      final host = await startHost(name: name, initial: initial, initialSong: initialSong);
       _host = host;
       _subs.add(host.clientCount.listen((n) {
         state = state.copyWith(followers: n);
@@ -125,8 +152,20 @@ class ShareController extends Notifier<ShareSession> {
     }
   }
 
-  /// Host: push the currently-viewed song / scroll to followers.
-  void updateHostView(SharedView view) => _host?.update(view);
+  /// Host: push the currently-viewed song / scroll to followers. Full lyrics are
+  /// attached only when the song changes (browser followers need them); pure
+  /// scroll updates send just the view.
+  void updateHostView(SharedView view) {
+    final host = _host;
+    if (host == null) return;
+    if (view.songId != _hostedSongId) {
+      final song = _songFor(view.songId);
+      if (song != null) _hostedSongId = view.songId;
+      host.update(view, song: song);
+    } else {
+      host.update(view);
+    }
+  }
 
   /// Join a session entered manually (host:port or ws:// URL).
   Future<void> joinByAddress(String address) async {
@@ -175,5 +214,6 @@ class ShareController extends Notifier<ShareSession> {
     await _client?.close();
     _host = null;
     _client = null;
+    _hostedSongId = null;
   }
 }

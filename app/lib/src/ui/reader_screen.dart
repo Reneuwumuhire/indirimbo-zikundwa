@@ -9,6 +9,7 @@ import '../state/favorites.dart';
 import '../state/providers.dart';
 import '../state/settings.dart';
 import '../state/share_state.dart';
+import '../state/strings.dart';
 import '../theme/app_theme.dart';
 import '../theme/font_combos.dart';
 import 'share_sheet.dart';
@@ -122,8 +123,37 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
         .updateHostView(SharedView(songId: widget.songId, scroll: frac));
   }
 
-  void _go(Song s) => Navigator.of(context)
-      .pushReplacement(MaterialPageRoute(builder: (_) => ReaderScreen(songId: s.id)));
+  // Minimum horizontal fling speed (px/s) to treat a drag as a song swipe.
+  static const double _swipeVelocity = 240;
+
+  // dir: +1 the new song enters from the right (next), -1 from the left (prev),
+  // 0 uses the default platform transition (no directional slide).
+  void _go(Song s, {int dir = 0}) {
+    final route = dir == 0
+        ? MaterialPageRoute(builder: (_) => ReaderScreen(songId: s.id))
+        : PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 260),
+            reverseTransitionDuration: const Duration(milliseconds: 260),
+            pageBuilder: (_, __, ___) => ReaderScreen(songId: s.id),
+            transitionsBuilder: (_, anim, __, child) => SlideTransition(
+              position: Tween(begin: Offset(dir.toDouble(), 0), end: Offset.zero)
+                  .animate(CurvedAnimation(parent: anim, curve: Curves.easeOutCubic)),
+              child: child,
+            ),
+          );
+    Navigator.of(context).pushReplacement(route);
+  }
+
+  // Swipe right -> previous song, swipe left -> next song (mirrors the buttons).
+  void _onHorizontalSwipe(DragEndDetails details, {Song? prev, Song? next}) {
+    if (_pinching) return;
+    final v = details.primaryVelocity ?? 0;
+    if (v > _swipeVelocity) {
+      if (prev != null) _go(prev, dir: -1);
+    } else if (v < -_swipeVelocity) {
+      if (next != null) _go(next, dir: 1);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +195,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     final reading = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onDoubleTap: _toggleImmersive,
+      onHorizontalDragEnd: (d) => _onHorizontalSwipe(d, prev: prev, next: next),
       child: Listener(
         onPointerDown: _onPointerDown,
         onPointerMove: _onPointerMove,
@@ -175,7 +206,10 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
             constraints: const BoxConstraints(maxWidth: 720),
             child: ScrollConfiguration(
               behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: ListView(
+              // SelectionArea makes the title + lyrics selectable (long-press),
+              // so users can copy/share text via the native selection toolbar.
+              child: SelectionArea(
+                child: ListView(
               controller: _scroll,
               physics: _pinching ? const NeverScrollableScrollPhysics() : null,
               padding: EdgeInsets.fromLTRB(24, immersive ? 8 : 18, 24, 40),
@@ -216,6 +250,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
               ],
             ),
             ),
+            ),
           ),
         ),
       ),
@@ -242,14 +277,25 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
               onStop: () => ref.read(shareControllerProvider.notifier).leave(),
             ),
           Expanded(
-            child: SafeArea(top: immersive, bottom: immersive, child: reading),
+            child: SafeArea(
+              top: immersive,
+              bottom: immersive,
+              // Lyrics size is controlled by the reader's own font-size + pinch
+              // zoom, so opt out of the global app text scale here.
+              child: MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(textScaler: TextScaler.noScaling),
+                child: reading,
+              ),
+            ),
           ),
           if (!immersive)
             _BottomBar(
               number: song.label,
               prevLabel: t.shareBack,
-              onPrev: prev == null ? null : () => _go(prev),
-              onNext: next == null ? null : () => _go(next),
+              onPrev: prev == null ? null : () => _go(prev, dir: -1),
+              onNext: next == null ? null : () => _go(next, dir: 1),
+              onPick: () => _openSongPicker(inSeries, song, collection.name, t),
             ),
         ],
       ),
@@ -277,6 +323,178 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
               const ReaderControls(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  // Quick switch to another song in the same book: jump by number/title or pick
+  // from the list. Tapping a song replaces the reader with that song.
+  void _openSongPicker(List<Song> songs, Song current, String bookName, Strings t) {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+      ),
+      builder: (_) => _SongPickerSheet(
+        songs: songs,
+        currentId: current.id,
+        bookName: bookName,
+        title: t.songPickerTitle,
+        hint: t.songPickerHint,
+        countLabel: t.songPickerCount(songs.length),
+        onPick: (s) {
+          Navigator.of(context).pop();
+          if (s.id != current.id) _go(s);
+        },
+      ),
+    );
+  }
+}
+
+class _SongPickerSheet extends StatefulWidget {
+  final List<Song> songs;
+  final String currentId;
+  final String bookName;
+  final String title;
+  final String hint;
+  final String countLabel;
+  final void Function(Song) onPick;
+  const _SongPickerSheet({
+    required this.songs,
+    required this.currentId,
+    required this.bookName,
+    required this.title,
+    required this.hint,
+    required this.countLabel,
+    required this.onPick,
+  });
+
+  @override
+  State<_SongPickerSheet> createState() => _SongPickerSheetState();
+}
+
+class _SongPickerSheetState extends State<_SongPickerSheet> {
+  final _ctrl = TextEditingController();
+  late List<Song> _filtered = widget.songs;
+
+  void _onQuery(String q) {
+    final s = q.trim().toLowerCase();
+    setState(() {
+      _filtered = s.isEmpty
+          ? widget.songs
+          : widget.songs
+              .where((song) =>
+                  song.label.toLowerCase().startsWith(s) ||
+                  song.displayTitle.toLowerCase().contains(s))
+              .toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final reader = theme.extension<ReaderPalette>()!;
+    final maxH = MediaQuery.of(context).size.height * 0.78;
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxH),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(widget.title,
+                            style: theme.textTheme.titleLarge?.copyWith(fontSize: 19)),
+                      ),
+                      Text(widget.countLabel,
+                          style: TextStyle(
+                              fontFamily: AppFonts.mono, fontSize: 11, color: reader.muted)),
+                    ],
+                  ),
+                  Text(widget.bookName.toUpperCase(),
+                      style: TextStyle(
+                          fontFamily: AppFonts.mono,
+                          fontSize: 10.5,
+                          letterSpacing: 1.2,
+                          color: reader.muted)),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: _ctrl,
+                    onChanged: _onQuery,
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                      hintText: widget.hint,
+                      prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                      isDense: true,
+                      border:
+                          OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              child: _filtered.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text('—',
+                          style: TextStyle(color: reader.muted, fontFamily: AppFonts.mono)),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      itemCount: _filtered.length,
+                      itemBuilder: (_, i) {
+                        final s = _filtered[i];
+                        final sel = s.id == widget.currentId;
+                        return ListTile(
+                          dense: true,
+                          selected: sel,
+                          selectedTileColor:
+                              theme.colorScheme.primary.withValues(alpha: 0.08),
+                          leading: SizedBox(
+                            width: 46,
+                            child: Text('#${s.label}',
+                                style: TextStyle(
+                                    fontFamily: AppFonts.mono,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: sel ? theme.colorScheme.primary : reader.muted)),
+                          ),
+                          title: Text(s.displayTitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: AppFonts.uiBody,
+                                  fontSize: 14.5,
+                                  fontWeight: sel ? FontWeight.w700 : FontWeight.w400,
+                                  color: theme.colorScheme.onSurface)),
+                          trailing: sel
+                              ? Icon(Icons.check_rounded,
+                                  size: 18, color: theme.colorScheme.primary)
+                              : null,
+                          onTap: () => widget.onPick(s),
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );
@@ -352,8 +570,13 @@ class _BottomBar extends StatelessWidget {
   final String prevLabel;
   final VoidCallback? onPrev;
   final VoidCallback? onNext;
+  final VoidCallback? onPick;
   const _BottomBar(
-      {required this.number, required this.prevLabel, required this.onPrev, required this.onNext});
+      {required this.number,
+      required this.prevLabel,
+      required this.onPrev,
+      required this.onNext,
+      this.onPick});
 
   @override
   Widget build(BuildContext context) {
@@ -386,15 +609,27 @@ class _BottomBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.music_note_rounded, size: 13, color: theme.colorScheme.primary),
-                  const SizedBox(width: 5),
-                  Text(number,
-                      style: TextStyle(
-                          fontFamily: AppFonts.mono, fontSize: 12, color: muted)),
-                ],
+              // Tap the number to jump to another song in the same book.
+              InkWell(
+                onTap: onPick,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.music_note_rounded, size: 13, color: theme.colorScheme.primary),
+                      const SizedBox(width: 5),
+                      Text(number,
+                          style: TextStyle(
+                              fontFamily: AppFonts.mono, fontSize: 12, color: muted)),
+                      if (onPick != null) ...[
+                        const SizedBox(width: 3),
+                        Icon(Icons.unfold_more_rounded, size: 14, color: muted),
+                      ],
+                    ],
+                  ),
+                ),
               ),
               Expanded(
                 child: TextButton(

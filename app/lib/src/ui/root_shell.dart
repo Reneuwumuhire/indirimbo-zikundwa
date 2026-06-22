@@ -49,6 +49,16 @@ class _RootShellState extends ConsumerState<RootShell> {
   @override
   Widget build(BuildContext context) {
     final repo = ref.watch(repositoryProvider);
+    // Trigger the background OTA content check (lazily) and notify when a new
+    // dataset has been downloaded (it applies on the next launch).
+    ref.listen<AsyncValue<bool>>(datasetUpdateCheckProvider, (_, next) {
+      if (next.valueOrNull == true && mounted) {
+        final messenger = ScaffoldMessenger.maybeOf(context);
+        messenger?.showSnackBar(
+          SnackBar(content: Text(ref.read(stringsProvider).contentUpdated)),
+        );
+      }
+    });
     return repo.when(
       loading: () => const _Splash(),
       error: (e, _) => Scaffold(
@@ -227,7 +237,7 @@ class _NearbyBanner extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
               child: Text(joinLabel,
-                  style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.w700)),
+                  style: TextStyle(fontFamily: AppFonts.uiBody, fontWeight: FontWeight.w700)),
             ),
             IconButton(
               onPressed: onDismiss,
@@ -265,7 +275,7 @@ class _Splash extends ConsumerWidget {
             const SizedBox(height: 6),
             Text(t.splashSub,
                 style: TextStyle(
-                    fontFamily: AppFonts.body,
+                    fontFamily: AppFonts.uiBody,
                     fontSize: 13,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5))),
             const SizedBox(height: 28),

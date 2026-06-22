@@ -89,6 +89,12 @@ class Strings {
       );
   String get languageSection => _t('Langue', 'Language');
   String get fontComboSection => _t('Combinaison de polices', 'Font pairing');
+  String get appTextSection => _t('Texte de l’application', 'App text');
+  String get appTextHint => _t(
+        'Police et taille du texte (et des icônes) dans toute l’application.',
+        'Font and size of text (and icons) across the whole app.',
+      );
+  String get resetDefaults => _t('Réinitialiser', 'Reset to default');
   String get layoutSection => _t('Disposition des recueils', 'Books layout');
   String get layoutGrid => _t('Grille', 'Grid');
   String get layoutList => _t('Liste', 'List');
@@ -138,6 +144,13 @@ class Strings {
   String get refrainLabel => _t('REFRAIN', 'CHORUS');
   String version(String v) => _t('Version $v', 'Version $v');
   String get songNotFound => _t('Chant introuvable', 'Song not found');
+  String get contentUpdated => _t(
+        'Nouveaux chants téléchargés. Redémarrez pour les voir.',
+        'New songs downloaded. Restart to see them.',
+      );
+  String get songPickerTitle => _t('Aller à un chant', 'Go to a song');
+  String get songPickerHint => _t('Numéro ou titre…', 'Number or title…');
+  String songPickerCount(int n) => _t('$n chants', '$n songs');
   String get display => _t('Affichage', 'Display');
   String get keepScreenOn => _t('Garder l’écran allumé', 'Keep screen on');
   String get keepScreenOnHint =>
@@ -148,6 +161,9 @@ class Strings {
 
   // Live share
   String get shareTitle => _t('Partage en direct', 'Live share');
+  String get shareAsText => _t('Partager le texte du chant', 'Share song text');
+  String get shareLiveSectionHint =>
+      _t('Ou suivez ensemble en direct :', 'Or follow along live together:');
   String get shareSubtitle => _t(
         'Partagez cette vue avec les personnes sur le même réseau Wi‑Fi.',
         'Share this view with people on the same Wi‑Fi network.',
@@ -181,6 +197,10 @@ class Strings {
       );
   String get shareJoinUrlsTitle =>
       _t('Adresses pour rejoindre', 'Addresses to join');
+  String get shareLinkBrowserHint => _t(
+        'Ouvrez ce lien dans un navigateur (même Wi‑Fi) pour suivre en direct.',
+        'Open this link in a browser (same Wi‑Fi) to follow along live.',
+      );
   String get shareCopied => _t('Copié', 'Copied');
   String get shareWaiting => _t('En attente du partage…', 'Waiting for the share…');
   String get shareResume => _t('Reprendre le suivi', 'Resume following');

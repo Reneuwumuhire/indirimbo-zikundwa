@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/models.dart';
+import '../share/song_share.dart';
 import '../share/transport.dart';
 import '../state/providers.dart';
 import '../state/settings.dart';
@@ -122,7 +123,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
           const SizedBox(height: 3),
           Text(collname,
               style: TextStyle(
-                  fontFamily: AppFonts.body,
+                  fontFamily: AppFonts.uiBody,
                   fontStyle: FontStyle.italic,
                   fontSize: 13.5,
                   color: theme.extension<ReaderPalette>()!.muted)),
@@ -137,7 +138,25 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
       mainAxisSize: MainAxisSize.min,
       children: [
         _nowSinging(theme, t, song, repo),
+        const SizedBox(height: 16),
+        SizedBox(
+          width: double.infinity,
+          child: _ShareCtaButton(
+            label: t.shareAsText,
+            icon: Icons.ios_share_rounded,
+            enabled: song != null,
+            onTap: song == null
+                ? null
+                : () {
+                    final name = repo?.collection(song.series).name ?? '';
+                    Navigator.of(context).pop();
+                    shareSong(song, name, t);
+                  },
+          ),
+        ),
         const SizedBox(height: 18),
+        _label(theme, t.shareLiveSectionHint.toUpperCase()),
+        const SizedBox(height: 12),
         if (canHost) ...[
           _label(theme, t.shareHostHint.toUpperCase()),
           const SizedBox(height: 8),
@@ -148,16 +167,10 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
           const SizedBox(height: 14),
           SizedBox(
             width: double.infinity,
-            child: FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: _taupe,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-              onPressed: song == null ? null : () => _host(song),
-              child: Text(t.shareHostAction,
-                  style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w700, fontSize: 15)),
+            child: _ShareCtaButton(
+              label: t.shareHostAction,
+              enabled: song != null,
+              onTap: song == null ? null : () => _host(song),
             ),
           ),
           const SizedBox(height: 14),
@@ -188,6 +201,13 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
           _label(theme, 'SHARE LINK'),
           const SizedBox(height: 8),
           ...session.joinUrls.take(2).map((u) => _CopyRow(url: u, copied: t.shareCopied)),
+          const SizedBox(height: 2),
+          Text(t.shareLinkBrowserHint,
+              style: TextStyle(
+                  fontFamily: AppFonts.uiBody,
+                  fontSize: 12,
+                  height: 1.35,
+                  color: theme.extension<ReaderPalette>()!.muted)),
         ],
         const SizedBox(height: 16),
         Row(
@@ -304,7 +324,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
   InputDecoration _input(ThemeData theme, String hint) => InputDecoration(
         hintText: hint,
         isDense: true,
-        hintStyle: TextStyle(fontFamily: AppFonts.body, color: theme.extension<ReaderPalette>()!.muted),
+        hintStyle: TextStyle(fontFamily: AppFonts.uiBody, color: theme.extension<ReaderPalette>()!.muted),
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -322,7 +342,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
           Expanded(
             child: Text(text,
                 style: TextStyle(
-                    fontFamily: AppFonts.body, fontSize: 13.5, height: 1.4, color: theme.extension<ReaderPalette>()!.verseText)),
+                    fontFamily: AppFonts.uiBody, fontSize: 13.5, height: 1.4, color: theme.extension<ReaderPalette>()!.verseText)),
           ),
         ],
       );
@@ -331,6 +351,70 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     final n = DateTime.now().microsecondsSinceEpoch;
     return List.generate(4, (i) => chars[(n >> (i * 5)) % chars.length]).join();
+  }
+}
+
+/// Primary "share my view" call-to-action: brand-gradient fill, drop shadow and
+/// an icon so it reads unmistakably as a tappable button (the old flat taupe fill
+/// looked disabled).
+class _ShareCtaButton extends StatelessWidget {
+  final String label;
+  final bool enabled;
+  final VoidCallback? onTap;
+  final IconData icon;
+  const _ShareCtaButton(
+      {required this.label,
+      required this.enabled,
+      this.onTap,
+      this.icon = Icons.podcasts_rounded});
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(12);
+    return Opacity(
+      opacity: enabled ? 1 : 0.45,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: AppTheme.brandGradient,
+          borderRadius: radius,
+          boxShadow: enabled
+              ? [
+                  BoxShadow(
+                    color: AppTheme.rust.withValues(alpha: 0.38),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ]
+              : null,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: radius,
+          child: InkWell(
+            borderRadius: radius,
+            onTap: onTap,
+            splashColor: Colors.white24,
+            highlightColor: Colors.white10,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, size: 19, color: Colors.white),
+                  const SizedBox(width: 10),
+                  Text(label,
+                      style: const TextStyle(
+                          fontFamily: AppFonts.heading,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.5,
+                          color: Colors.white)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
