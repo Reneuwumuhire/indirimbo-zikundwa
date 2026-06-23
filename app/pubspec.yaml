@@ -6,13 +6,14 @@ version: 1.0.0+1
 environment:
   sdk: ^3.9.0
 
-# Use the SQLite library bundled by sqlite3_flutter_libs (already loaded in the
-# process) instead of having the sqlite3 build hook download a prebuilt binary
-# per ABI from GitHub. Makes the build self-contained / network-independent.
+# Compile SQLite from the vendored amalgamation (third_party/sqlite3) instead of
+# downloading a prebuilt binary per ABI from GitHub. Self-contained / offline
+# build, and bundles a real lib on every platform (no process-symbol lookup).
 hooks:
   user_defines:
     sqlite3:
-      source: process
+      source: source
+      path: third_party/sqlite3/sqlite3.c
 
 dependencies:
   flutter:
@@ -29,7 +30,6 @@ dependencies:
   path_provider: ^2.1.6
   archive: ^4.0.9
   sqlite3: ^3.3.3
-  sqlite3_flutter_libs: ^0.5.24
 
 dev_dependencies:
   flutter_test:
