@@ -61,5 +61,5 @@ First review for a new account can take a few days; updates are usually faster.
   download ~20 MB.
 - `minSdk`/`targetSdk` come from Flutter (compileSdk 36) — meets Play's current
   target-API requirement.
-- Android package id stays `bi.indirimbo.indirimbo` (independent of the iOS
+- Android package id stays `bi.indirimbozikunzwe` (independent of the iOS
   bundle id `bi.indirimbozikunzwe`).

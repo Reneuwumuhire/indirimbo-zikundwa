@@ -1,6 +1,6 @@
 # Google Play listing — copy/paste fields
 
-App: **Indirimbo Zikundwa** · package `bi.indirimbo.indirimbo` · version 1.0.0 (versionCode 2)
+App: **Indirimbo Zikundwa** · package `bi.indirimbozikunzwe` · version 1.0.0 (versionCode 2)
 
 Assets in this folder:
 - `assets/play-icon-512.png` — 512×512 high-res icon
