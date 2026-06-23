@@ -4,10 +4,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data/book_groups.dart';
-import '../theme/app_theme.dart';
-import '../theme/font_combos.dart';
-import 'strings.dart';
+import 'package:indirimbo/src/data/book_groups.dart';
+import 'package:indirimbo/src/core/app_theme.dart';
+import 'package:indirimbo/src/core/font_combos.dart';
+import 'package:indirimbo/src/core/strings.dart';
 
 /// How the collection ("books") library is laid out.
 enum LibraryLayout { grid, list }

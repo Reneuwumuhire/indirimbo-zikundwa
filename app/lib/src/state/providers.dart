@@ -1,10 +1,10 @@
 // Core providers: the repository (async-loaded) plus search wiring.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/hymn_repository.dart';
-import '../data/models.dart';
-import '../data/update_service.dart';
-import 'settings.dart' show sharedPrefsProvider;
+import 'package:indirimbo/src/data/hymn_repository.dart';
+import 'package:indirimbo/src/data/models.dart';
+import 'package:indirimbo/src/data/dataset/update_service.dart';
+import 'package:indirimbo/src/state/settings.dart' show sharedPrefsProvider;
 
 final repositoryProvider = FutureProvider<HymnRepository>((ref) async {
   return HymnRepository.load(ref.read(sharedPrefsProvider));

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:indirimbo/src/ui/widgets/lyrics_viewer.dart';
+import 'package:indirimbo/src/features/reader/lyrics_viewer.dart';
 
 void main() {
   group('verseLines', () {

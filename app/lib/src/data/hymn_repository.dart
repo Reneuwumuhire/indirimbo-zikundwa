@@ -4,8 +4,8 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'hymn_store.dart';
-import 'models.dart';
+import 'package:indirimbo/src/data/store/hymn_store.dart';
+import 'package:indirimbo/src/data/models.dart';
 
 class HymnRepository {
   HymnRepository(this._store);

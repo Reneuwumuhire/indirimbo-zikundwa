@@ -9,9 +9,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/models.dart';
-import '../share/transport.dart';
-import 'providers.dart';
+import 'package:indirimbo/src/data/models.dart';
+import 'package:indirimbo/src/features/sharing/transport.dart';
+import 'package:indirimbo/src/state/providers.dart';
 
 enum ShareRole { none, host, follower }
 

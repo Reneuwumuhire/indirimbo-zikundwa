@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:indirimbo/src/share/transport.dart';
+import 'package:indirimbo/src/features/sharing/transport.dart';
 
 void main() {
   group('share protocol', () {

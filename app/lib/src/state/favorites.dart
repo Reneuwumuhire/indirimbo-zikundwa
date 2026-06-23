@@ -1,7 +1,7 @@
 // Favorite song ids, persisted with SharedPreferences.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'settings.dart' show sharedPrefsProvider;
+import 'package:indirimbo/src/state/settings.dart' show sharedPrefsProvider;
 
 final favoritesProvider =
     NotifierProvider<FavoritesController, Set<String>>(FavoritesController.new);
