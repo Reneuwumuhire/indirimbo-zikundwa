@@ -1,6 +1,6 @@
 # App Store listing — copy/paste fields
 
-App: **Indirimbo Zikundwa** · bundle id `bi.indirimbo.indirimbo` · version 1.0.0 (build 1)
+App: **Indirimbo Zikundwa** · bundle id `bi.indirimbozikunzwe` · version 1.0.0 (build 1)
 
 > Paste each block into the matching field in App Store Connect →
 > *Your app → (version) → App Information / Pricing / Version metadata*.

@@ -14,6 +14,10 @@ hooks:
     sqlite3:
       source: source
       path: third_party/sqlite3/sqlite3.c
+      # Keep SQLite's default build options (FTS5, etc.) and silence the
+      # harmless "gethostuuid() is disabled" warning on Apple builds.
+      defines:
+        - HAVE_GETHOSTUUID=0
 
 dependencies:
   flutter:

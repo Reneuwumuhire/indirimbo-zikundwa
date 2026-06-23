@@ -13,14 +13,14 @@ You already have a paid Apple Developer account + App Store Connect (the "Users 
 ## 0. One-time prerequisites
 - A **Mac with Xcode** (you have Xcode 26) signed in with your Apple ID:
   Xcode → Settings → Accounts → add your Apple ID (the one on the paid team).
-- Confirm the bundle id **`bi.indirimbo.indirimbo`** is what you want (it's set in the project). The App Store name can differ from the bundle id.
+- Confirm the bundle id **`bi.indirimbozikunzwe`** is what you want (it's set in the project). The App Store name can differ from the bundle id.
 
 ## 1. Create the app record in App Store Connect
 App Store Connect → **Apps → ➕ → New App**:
 - Platform: **iOS**
 - Name: **Indirimbo Zikundwa** (must be unique on the App Store; if taken, add a word, e.g. "Indirimbo Zikundwa – Hymnal")
 - Primary language: **English (U.S.)**
-- Bundle ID: select **bi.indirimbo.indirimbo** (register it first in *Certificates, IDs & Profiles → Identifiers* if it's not in the dropdown)
+- Bundle ID: select **bi.indirimbozikunzwe** (register it first in *Certificates, IDs & Profiles → Identifiers* if it's not in the dropdown)
 - SKU: anything unique, e.g. `indirimbo-zikundwa`
 - Full access.
 
