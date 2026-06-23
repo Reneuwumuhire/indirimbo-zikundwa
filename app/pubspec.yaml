@@ -1,5 +1,5 @@
 name: indirimbo
-description: "Indirimbo Zikundwa — offline Christian hymnal reader (content from missionnaire.net)."
+description: "Indirimbo Zikundwa — an independent, offline Christian hymnal reader."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -27,7 +27,6 @@ dependencies:
   shared_preferences: ^2.3.3
   web_socket_channel: ^3.0.0
   wakelock_plus: ^1.2.8
-  url_launcher: ^6.3.0
   bonsoir: ^7.0.0
   share_plus: ^13.1.0
   http: ^1.6.0

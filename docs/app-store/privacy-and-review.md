@@ -51,7 +51,7 @@ The hymn texts are traditional/community hymns compiled for offline reading.
 
 ## ⚠️ Content rights (Guideline 5.2 — read this)
 App Review can reject apps that redistribute copyrighted material without rights.
-The hymn texts originate from missionnaire.net. Before/with submission, make sure you
+The hymn texts are traditional/public-domain hymns. Before/with submission, make sure you
 either (a) have permission to distribute these lyrics, or (b) they are public-domain /
 community hymns. If you have permission, keep written proof handy in case App Review
 asks. This is the **most likely non-technical reason** a hymnal app gets held in review.

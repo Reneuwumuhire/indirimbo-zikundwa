@@ -2,8 +2,8 @@
 
 The Flutter application for **Indirimbo Zikundwa**, an offline-first reader for
 Christian hymns (Kirundi · Kinyarwanda · Swahili · French). Songs come from
-various public-domain hymnals; the app is an independent reader linked to the
-[missionnaire.net](https://www.missionnaire.net/) ministry.
+various public-domain hymnals; the app is an independent, offline reader and is
+not affiliated with any organization.
 
 > Full project overview, screenshots and store assets are in the
 > [repository README](../README.md).
@@ -67,7 +67,7 @@ lib/
     follower_screen.dart      live "EN DIRECT" follower view
     settings_screen.dart      settings (language, layout, fonts, theme, keep-screen-on, about)
     share_sheet.dart          host/join live share
-    about_sheet.dart          app + missionnaire.net info
+    about_sheet.dart          app info
     widgets/                  collection_cover, collection_list_tile, song_tile, lyrics_viewer, reader_controls
 tools/share_host.dart        CLI live-share host (testing without a device)
 test/                        dataset / title / verse-line / share-transport tests

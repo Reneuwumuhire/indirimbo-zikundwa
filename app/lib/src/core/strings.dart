@@ -72,20 +72,12 @@ class Strings {
         'Indirimbo Zikundwa gathers Christian hymns from various public '
             'hymnals, for fully offline reading.',
       );
-  String get aboutSiteTitle => _t('Le ministère missionnaire.net', 'About missionnaire.net');
-  String get aboutSiteBody => _t(
-        'missionnaire.net est un ministère chrétien où vous trouverez bien plus : '
-            'des applications à télécharger, des prédications (sermons), de la '
-            'musique audio et d’autres ressources spirituelles.',
-        'missionnaire.net is a Christian ministry where you’ll find much more: '
-            'downloadable apps, sermons, audio music and other spiritual resources.',
-      );
-  String get visitSite => _t('Visiter missionnaire.net', 'Visit missionnaire.net');
   String get aboutSourceNote => _t(
-        'Les chants proviennent de recueils du domaine public ; cette application '
-            'est un lecteur indépendant et hors‑ligne.',
-        'Songs are from public-domain hymnals; this app is an independent, '
-            'offline reader.',
+        'Les chants proviennent de recueils du domaine public. Indirimbo Zikundwa '
+            'est un lecteur indépendant et hors‑ligne, sans affiliation à aucune '
+            'organisation.',
+        'Songs are from public-domain hymnals. Indirimbo Zikundwa is an '
+            'independent, offline reader and is not affiliated with any organization.',
       );
   String get languageSection => _t('Langue', 'Language');
   String get fontComboSection => _t('Combinaison de polices', 'Font pairing');
