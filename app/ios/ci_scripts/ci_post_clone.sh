@@ -24,6 +24,10 @@ export PATH="$PATH:$FLUTTER_HOME/bin"
 flutter --version
 flutter precache --ios
 
+# Ensure native-assets compilation is on (this app compiles SQLite from the
+# vendored amalgamation via a build hook). Harmless if already the default.
+flutter config --enable-native-assets || true
+
 # The Flutter app lives in app/ at the repo root.
 APP_DIR="$CI_PRIMARY_REPOSITORY_PATH/app"
 
