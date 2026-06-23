@@ -15,7 +15,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:indirimbo/src/share/transport.dart';
+import 'package:indirimbo/src/features/sharing/transport.dart';
 
 Future<void> main(List<String> args) async {
   final auto = args.contains('auto');

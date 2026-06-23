@@ -1,11 +1,21 @@
 // Core providers: the repository (async-loaded) plus search wiring.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/hymn_repository.dart';
-import '../data/models.dart';
+import 'package:indirimbo/src/data/hymn_repository.dart';
+import 'package:indirimbo/src/data/models.dart';
+import 'package:indirimbo/src/data/dataset/update_service.dart';
+import 'package:indirimbo/src/state/settings.dart' show sharedPrefsProvider;
 
 final repositoryProvider = FutureProvider<HymnRepository>((ref) async {
-  return HymnRepository.load();
+  return HymnRepository.load(ref.read(sharedPrefsProvider));
+});
+
+/// Background over-the-air content check: looks for a newer published dataset
+/// and downloads it (applied on next launch). Returns true if one was fetched.
+/// Lazily evaluated — read it once after first paint to trigger the check.
+final datasetUpdateCheckProvider = FutureProvider<bool>((ref) async {
+  await Future<void>.delayed(const Duration(seconds: 3)); // let the UI settle
+  return checkForDatasetUpdate(ref.read(sharedPrefsProvider));
 });
 
 /// Selected bottom-navigation tab (0=Recueils,1=Recherche,2=Favoris,3=Réglages).

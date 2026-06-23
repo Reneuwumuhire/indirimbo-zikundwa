@@ -6,6 +6,19 @@ version: 1.0.0+1
 environment:
   sdk: ^3.9.0
 
+# Compile SQLite from the vendored amalgamation (third_party/sqlite3) instead of
+# downloading a prebuilt binary per ABI from GitHub. Self-contained / offline
+# build, and bundles a real lib on every platform (no process-symbol lookup).
+hooks:
+  user_defines:
+    sqlite3:
+      source: source
+      path: third_party/sqlite3/sqlite3.c
+      # Keep SQLite's default build options (FTS5, etc.) and silence the
+      # harmless "gethostuuid() is disabled" warning on Apple builds.
+      defines:
+        - HAVE_GETHOSTUUID=0
+
 dependencies:
   flutter:
     sdk: flutter
@@ -15,6 +28,12 @@ dependencies:
   web_socket_channel: ^3.0.0
   wakelock_plus: ^1.2.8
   url_launcher: ^6.3.0
+  bonsoir: ^7.0.0
+  share_plus: ^13.1.0
+  http: ^1.6.0
+  path_provider: ^2.1.6
+  archive: ^4.0.9
+  sqlite3: ^3.3.3
 
 dev_dependencies:
   flutter_test:
@@ -28,19 +47,21 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   min_sdk_android: 21
-  adaptive_icon_background: "#0F172A"
+  adaptive_icon_background: "assets/icon/icon_background.png"
   adaptive_icon_foreground: "assets/icon/icon_foreground.png"
   web:
     generate: true
     image_path: "assets/icon/icon.png"
-    background_color: "#0F172A"
-    theme_color: "#0F172A"
+    background_color: "#0B5138"
+    theme_color: "#0B5138"
 
 flutter:
   uses-material-design: true
 
   assets:
-    - assets/data/hymns.json
+    # Gzip-compressed (~1.7 MB vs 11 MB) and decoded at load — keeps the app
+    # download small. The raw hymns.json stays in the repo for tests/tooling.
+    - assets/data/hymns.json.gz
 
   fonts:
     # UI typography — bundled Google Fonts (offline). Classic hymnal look:

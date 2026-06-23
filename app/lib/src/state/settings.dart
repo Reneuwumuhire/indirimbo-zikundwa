@@ -4,10 +4,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data/book_groups.dart';
-import '../theme/app_theme.dart';
-import '../theme/font_combos.dart';
-import 'strings.dart';
+import 'package:indirimbo/src/data/book_groups.dart';
+import 'package:indirimbo/src/core/app_theme.dart';
+import 'package:indirimbo/src/core/font_combos.dart';
+import 'package:indirimbo/src/core/strings.dart';
 
 /// How the collection ("books") library is laid out.
 enum LibraryLayout { grid, list }
@@ -38,6 +38,13 @@ class ReaderSettings {
   /// Index into [fontCombos] — the chosen title/lyrics font pairing.
   final int fontCombo;
 
+  /// Global text scale applied to the whole app's UI text (1.0 = default).
+  /// Song lyrics are sized independently via [fontSize].
+  final double appTextScale;
+
+  /// Font family used for general app (UI) text. One of [readerFonts].
+  final String appFont;
+
   /// Keep the screen awake while reading lyrics (default on).
   final bool keepScreenOn;
 
@@ -53,6 +60,8 @@ class ReaderSettings {
     this.libraryLayout = LibraryLayout.grid,
     this.librarySort = LibrarySort.alpha,
     this.fontCombo = 0,
+    this.appTextScale = 1.0,
+    this.appFont = AppFonts.body,
     this.keepScreenOn = true,
     this.libraryFilter,
   });
@@ -66,6 +75,8 @@ class ReaderSettings {
     LibraryLayout? libraryLayout,
     LibrarySort? librarySort,
     int? fontCombo,
+    double? appTextScale,
+    String? appFont,
     bool? keepScreenOn,
     // Use a sentinel so null can be set explicitly (= "All").
     Object? libraryFilter = _unset,
@@ -79,6 +90,8 @@ class ReaderSettings {
         libraryLayout: libraryLayout ?? this.libraryLayout,
         librarySort: librarySort ?? this.librarySort,
         fontCombo: fontCombo ?? this.fontCombo,
+        appTextScale: appTextScale ?? this.appTextScale,
+        appFont: appFont ?? this.appFont,
         keepScreenOn: keepScreenOn ?? this.keepScreenOn,
         libraryFilter: libraryFilter == _unset
             ? this.libraryFilter
@@ -104,8 +117,13 @@ class SettingsController extends Notifier<ReaderSettings> {
   static const _kLayout = 'reader.layout';
   static const _kSort = 'reader.sort';
   static const _kCombo = 'reader.combo';
+  static const _kAppScale = 'app.textScale';
+  static const _kAppFont = 'app.font';
   static const _kWake = 'reader.keepScreenOn';
   static const _kFilter = 'reader.filter'; // -1 = all, else BookGroup index
+
+  static const _minScale = 0.85;
+  static const _maxScale = 1.5;
 
   SharedPreferences get _prefs => ref.read(sharedPrefsProvider);
 
@@ -126,6 +144,8 @@ class SettingsController extends Notifier<ReaderSettings> {
       librarySort: LibrarySort.values[
           (p.getInt(_kSort) ?? 0).clamp(0, LibrarySort.values.length - 1)],
       fontCombo: (p.getInt(_kCombo) ?? 0).clamp(0, fontCombos.length - 1),
+      appTextScale: (p.getDouble(_kAppScale) ?? 1.0).clamp(_minScale, _maxScale),
+      appFont: _validFont(p.getString(_kAppFont)),
       keepScreenOn: p.getBool(_kWake) ?? true,
       libraryFilter: (filterIdx >= 0 && filterIdx < BookGroup.values.length)
           ? BookGroup.values[filterIdx]
@@ -181,6 +201,32 @@ class SettingsController extends Notifier<ReaderSettings> {
     state = state.copyWith(fontCombo: v);
     _prefs.setInt(_kCombo, v);
   }
+
+  static String _validFont(String? f) =>
+      (f != null && readerFonts.contains(f)) ? f : AppFonts.body;
+
+  void setAppTextScale(double v) {
+    final s = v.clamp(_minScale, _maxScale);
+    state = state.copyWith(appTextScale: s);
+    _prefs.setDouble(_kAppScale, s);
+  }
+
+  void setAppFont(String f) {
+    final v = _validFont(f);
+    state = state.copyWith(appFont: v);
+    _prefs.setString(_kAppFont, v);
+  }
+
+  /// Restore the app-text settings (font + size) to their defaults.
+  void resetAppText() {
+    state = state.copyWith(appTextScale: 1.0, appFont: AppFonts.body);
+    _prefs.setDouble(_kAppScale, 1.0);
+    _prefs.setString(_kAppFont, AppFonts.body);
+  }
+
+  /// True when the app-text settings are already at their defaults.
+  bool get isAppTextDefault =>
+      state.appTextScale == 1.0 && state.appFont == AppFonts.body;
 
   void setKeepScreenOn(bool v) {
     state = state.copyWith(keepScreenOn: v);

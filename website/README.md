@@ -3,7 +3,7 @@
 A static, single-page landing site for the **Indirimbo Zikundwa** hymnal app,
 published with **GitHub Pages**.
 
-**Live:** https://reneuwumuhire.github.io/indirimbo-zikundwa/
+**Live:** https://indirimbo-zikundwa.github.io/
 
 ## Files
 
