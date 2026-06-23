@@ -5,7 +5,7 @@ App: **Indirimbo Zikundwa** · package `bi.indirimbozikunzwe` · version 1.0.0 (
 Assets in this folder:
 - `assets/play-icon-512.png` — 512×512 high-res icon
 - `assets/feature-graphic-1024x500.png` — required feature graphic
-- `screenshots/phone/*.png` — 4 phone screenshots (1200×2400, 2:1, Play-compliant)
+- `screenshots/phone/*.png` — 4 marketing phone screenshots (1080×2160, 2:1)
 
 ---
 
