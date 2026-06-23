@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- App uses only standard, exempt encryption (HTTPS/WSS) — skip the export
+	     compliance question on every TestFlight/App Store upload. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<!-- Live "SharePlay"-style song sharing over the local network (iOS 14+). -->
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Indirimbo utilise le réseau local pour partager en direct la vue d’un chant avec les personnes proches.</string>
