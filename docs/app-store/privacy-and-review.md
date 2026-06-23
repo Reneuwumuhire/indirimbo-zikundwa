@@ -18,7 +18,7 @@ the same Wi-Fi.)
 
 ## Privacy Policy
 A policy is already hosted at
-`https://reneuwumuhire.github.io/indirimbo-zikundwa/privacy.html`.
+`https://indirimbo-zikundwa.github.io/privacy.html`.
 Make sure it states: no personal data is collected; settings/favorites stay on the
 device; the live-share feature uses the local network only and runs no server. (If it
 doesn't yet, update `website/privacy.html` to say this and re-publish.)

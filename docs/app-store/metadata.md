@@ -69,9 +69,9 @@ First release of Indirimbo Zikundwa.
 ```
 
 ## URLs
-- **Support URL** (required): `https://reneuwumuhire.github.io/indirimbo-zikundwa/`
-- **Marketing URL** (optional): `https://reneuwumuhire.github.io/indirimbo-zikundwa/`
-- **Privacy Policy URL** (required): `https://reneuwumuhire.github.io/indirimbo-zikundwa/privacy.html`
+- **Support URL** (required): `https://indirimbo-zikundwa.github.io/`
+- **Marketing URL** (optional): `https://indirimbo-zikundwa.github.io/`
+- **Privacy Policy URL** (required): `https://indirimbo-zikundwa.github.io/privacy.html`
 
 ## Category
 - **Primary:** Books   *(a hymnal is a book of lyrics; safe, accurate)*

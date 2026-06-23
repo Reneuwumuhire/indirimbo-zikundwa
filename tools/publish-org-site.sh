@@ -20,7 +20,7 @@ ORG="indirimbo-zikundwa"
 REPO="$ORG/$ORG.github.io"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/website"
-OLD_URL="reneuwumuhire.github.io/indirimbo-zikundwa"
+OLD_URL="indirimbo-zikundwa.github.io"
 NEW_URL="indirimbo-zikundwa.github.io"
 
 echo "▶ Checking that the '$ORG' organisation exists…"

@@ -28,7 +28,7 @@ App Store Connect → **Apps → ➕ → New App**:
 In the app's **(version) page** and **App Information**:
 - App name, subtitle, promotional text, description, keywords, support URL, marketing URL → copy from `metadata.md`.
 - **Category:** Books (primary). **Age rating:** 4+ (answer "None" to everything).
-- **Privacy Policy URL:** `https://reneuwumuhire.github.io/indirimbo-zikundwa/privacy.html`.
+- **Privacy Policy URL:** `https://indirimbo-zikundwa.github.io/privacy.html`.
 - Upload the 4 **screenshots** to the **6.9" iPhone** slot (drag the PNGs from `screenshots/6.9-inch/`). One size set is enough — App Store reuses 6.9" for smaller iPhones.
 
 ## 3. App Privacy

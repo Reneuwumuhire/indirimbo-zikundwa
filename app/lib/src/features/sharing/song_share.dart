@@ -7,7 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:indirimbo/src/data/models.dart';
 import 'package:indirimbo/src/core/strings.dart';
 
-const _appUrl = 'https://reneuwumuhire.github.io/indirimbo-zikundwa/';
+const _appUrl = 'https://indirimbo-zikundwa.github.io/';
 
 /// Build a clean, readable text rendering of a song for sharing.
 String songAsText(Song song, String collectionName, Strings t) {

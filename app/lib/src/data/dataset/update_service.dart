@@ -16,7 +16,7 @@ import 'package:indirimbo/src/data/dataset/dataset_cache.dart';
 import 'package:indirimbo/src/data/dataset/dataset_source.dart';
 
 const String kDataUpdateBaseUrl =
-    'https://reneuwumuhire.github.io/indirimbo-zikundwa/data';
+    'https://indirimbo-zikundwa.github.io/data';
 
 /// The locally-effective dataset version (cached OTA version if it beats the
 /// bundled one, else the bundled version).
