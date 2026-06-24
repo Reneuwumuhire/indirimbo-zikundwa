@@ -64,6 +64,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            // Note: native debug symbols + the R8 deobfuscation map are bundled
+            // into the AAB by building with `--obfuscate --split-debug-info=...`
+            // (see docs/play-store/SUBMISSION-GUIDE.md). That removes Play's
+            // "no debug symbols / no deobfuscation file" upload warnings.
         }
     }
 }

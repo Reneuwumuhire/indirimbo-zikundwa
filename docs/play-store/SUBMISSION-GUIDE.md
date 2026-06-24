@@ -52,8 +52,13 @@ Add release notes (from `metadata.md`), review the summary, and **Send for revie
 First review for a new account can take a few days; updates are usually faster.
 
 ## Rebuilding for future updates
-1. Bump `version:` in `app/pubspec.yaml` (e.g. `1.0.1+3` — versionCode must increase).
-2. `cd app && flutter build appbundle --release --obfuscate --split-debug-info=build/symbols`
+1. Bump `version:` in `app/pubspec.yaml` (e.g. `1.0.1+4` — versionCode must increase).
+2. `cd app && flutter build appbundle --release --build-number=<N> --obfuscate --split-debug-info=build/symbols`
+   - Pass `--build-number` explicitly: `android/local.properties` caches a stale
+     `flutter.versionCode`, so the pubspec bump alone may not take effect.
+   - The `--obfuscate --split-debug-info` flags embed the **R8 deobfuscation map**
+     and **native debug symbols** into the AAB — this is what removes Play's
+     "no deobfuscation file" / "no debug symbols" upload warnings. Don't drop them.
 3. Upload the new `.aab` and roll out.
 
 ## Notes
