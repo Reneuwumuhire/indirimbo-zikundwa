@@ -35,14 +35,23 @@ class IndirimboApp extends ConsumerWidget {
       // Apply the user's app-wide text size to every screen. Song lyrics opt out
       // of this in the reader (they have their own size control). Icons follow
       // the same scale via applyTextScaling, so they grow with the text.
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context)
-            .copyWith(textScaler: TextScaler.linear(textScale)),
-        child: IconTheme.merge(
-          data: const IconThemeData(applyTextScaling: true),
-          child: child!,
-        ),
-      ),
+      //
+      // On large / high-resolution phones the fixed-size chrome looks tiny, so
+      // we add a width-based boost on top of the user's choice: baseline ~400dp
+      // logical width, scaling up to +30% on wide devices. This keeps text and
+      // icons legible without the user having to touch the text-size slider.
+      builder: (context, child) {
+        final width = MediaQuery.sizeOf(context).width;
+        final boost = (width / 400).clamp(1.0, 1.3);
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(textScale * boost)),
+          child: IconTheme.merge(
+            data: const IconThemeData(applyTextScaling: true),
+            child: child!,
+          ),
+        );
+      },
       home: const RootShell(),
     );
   }

@@ -64,7 +64,11 @@ class CollectionListTile extends ConsumerWidget {
                   Text(
                     '$code · ${t.songs(collection.songCount).toUpperCase()}',
                     style: TextStyle(
-                        fontFamily: AppFonts.mono, fontSize: 10.5, letterSpacing: 0.4, color: reader.muted),
+                        fontFamily: AppFonts.mono,
+                        fontSize: 12,
+                        letterSpacing: 0.3,
+                        fontWeight: FontWeight.w500,
+                        color: reader.muted),
                   ),
                 ],
               ),

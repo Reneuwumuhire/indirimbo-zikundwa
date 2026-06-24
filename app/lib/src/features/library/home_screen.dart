@@ -156,7 +156,7 @@ class _Masthead extends StatelessWidget {
                     style: TextStyle(
                         fontFamily: AppFonts.uiBody,
                         fontStyle: FontStyle.italic,
-                        fontSize: 14.5,
+                        fontSize: 16,
                         color: reader.muted)),
               ],
             ),
@@ -203,8 +203,8 @@ class _Subhead extends StatelessWidget {
           Text('$count · $label',
               style: TextStyle(
                   fontFamily: AppFonts.mono,
-                  fontSize: 10.5,
-                  letterSpacing: 1.2,
+                  fontSize: 12,
+                  letterSpacing: 1.0,
                   fontWeight: FontWeight.w700,
                   color: reader.muted)),
           const Spacer(),
@@ -276,13 +276,13 @@ class _FilterChips extends StatelessWidget {
               Text(label.toUpperCase(),
                   style: TextStyle(
                     fontFamily: AppFonts.mono,
-                    fontSize: 11,
+                    fontSize: 13,
                     letterSpacing: 0.8,
-                    fontWeight: on ? FontWeight.w700 : FontWeight.w400,
+                    fontWeight: on ? FontWeight.w700 : FontWeight.w600,
                     color: on ? accent : reader.muted,
                   )),
-              const SizedBox(height: 5),
-              Container(width: 16, height: 2, color: on ? accent : Colors.transparent),
+              const SizedBox(height: 6),
+              Container(width: 20, height: 2.5, color: on ? accent : Colors.transparent),
             ],
           ),
         ),
@@ -291,10 +291,10 @@ class _FilterChips extends StatelessWidget {
 
     return SizedBox(
       // Grow with the app text scale so the labels never clip.
-      height: MediaQuery.textScalerOf(context).scale(38),
+      height: MediaQuery.textScalerOf(context).scale(40) + 8,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+        padding: const EdgeInsets.fromLTRB(20, 6, 20, 2),
         children: [
           chip(allLabel, selected == null, () => onSelect(null)),
           for (final g in bookGroupOrder) chip(g.label, selected == g, () => onSelect(g)),
@@ -322,7 +322,11 @@ class _GridItem extends StatelessWidget {
         Text(
           bookGroupOf(entry.collection.id).label.toUpperCase(),
           style: TextStyle(
-              fontFamily: AppFonts.mono, fontSize: 9.5, letterSpacing: 1, color: reader.muted),
+              fontFamily: AppFonts.mono,
+              fontSize: 11,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w600,
+              color: reader.muted),
         ),
       ],
     );

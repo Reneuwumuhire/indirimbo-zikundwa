@@ -202,21 +202,21 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: surface,
         elevation: 0,
-        height: 64,
+        height: 70,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: accent.withValues(alpha: 0.14),
+        indicatorColor: accent.withValues(alpha: 0.20),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         iconTheme: WidgetStateProperty.resolveWith((s) => IconThemeData(
-              size: 22,
+              size: 24,
               applyTextScaling: true,
-              color: s.contains(WidgetState.selected) ? accent : onSurface.withValues(alpha: 0.5),
+              color: s.contains(WidgetState.selected) ? accent : onSurface.withValues(alpha: 0.72),
             )),
         labelTextStyle: WidgetStateProperty.resolveWith((s) => TextStyle(
               fontFamily: AppFonts.mono,
-              fontSize: 9.5,
-              letterSpacing: 0.6,
-              fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w400,
-              color: s.contains(WidgetState.selected) ? accent : onSurface.withValues(alpha: 0.6),
+              fontSize: 11,
+              letterSpacing: 0.4,
+              fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w600,
+              color: s.contains(WidgetState.selected) ? accent : onSurface.withValues(alpha: 0.82),
             )),
       ),
       chipTheme: ChipThemeData(
@@ -257,7 +257,7 @@ class AppTheme {
       chorusText: Color(0xFF3A2A1E),
       chorusAccent: rust,
       verseNumber: rust,
-      muted: Color(0xFF8C8472),
+      muted: Color(0xFF5C5343),
       hairline: Color(0x1A2A2418),
     ),
   );
@@ -276,7 +276,7 @@ class AppTheme {
       chorusText: Color(0xFF5A4326),
       chorusAccent: Color(0xFF7E3A22),
       verseNumber: Color(0xFF7E3A22),
-      muted: Color(0xFF8C7A5E),
+      muted: Color(0xFF635238),
       hairline: Color(0x1F4A3A24),
     ),
   );
@@ -295,7 +295,7 @@ class AppTheme {
       chorusText: Color(0xFFD9B48E),
       chorusAccent: Color(0xFFC9703F),
       verseNumber: Color(0xFFC9703F),
-      muted: Color(0xFF9A8E7A),
+      muted: Color(0xFFBFB39C),
       hairline: Color(0x1FFFFFFF),
     ),
   );

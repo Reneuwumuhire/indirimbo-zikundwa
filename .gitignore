@@ -18,6 +18,10 @@ caps/
 caps2/
 **/caps/
 
+# Release build artifacts (kept locally / attached to releases, not committed)
+*.aab
+*.ipa
+
 # Misc
 .DS_Store
 *.log

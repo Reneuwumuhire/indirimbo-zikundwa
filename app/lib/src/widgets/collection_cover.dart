@@ -93,9 +93,10 @@ class CollectionCover extends StatelessWidget {
                         '$code · ${collection.songCount} SONGS',
                         style: TextStyle(
                           fontFamily: AppFonts.mono,
-                          fontSize: compact ? 8 : 9,
+                          fontSize: compact ? 9 : 10,
                           letterSpacing: 0.8,
-                          color: Colors.white.withValues(alpha: 0.65),
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white.withValues(alpha: 0.85),
                         ),
                       ),
                     ],

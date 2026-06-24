@@ -1,6 +1,6 @@
 # App Store listing — copy/paste fields
 
-App: **Indirimbo Zikundwa** · bundle id `bi.indirimbozikunzwe` · version 1.0.0 (build 1)
+App: **Indirimbo Zikundwa** · bundle id `bi.indirimbozikunzwe` · version 1.0.0 (build 4)
 
 > Paste each block into the matching field in App Store Connect →
 > *Your app → (version) → App Information / Pricing / Version metadata*.
@@ -59,14 +59,17 @@ Indirimbo Zikundwa is made for congregations, choirs and anyone who loves to sin
 hymnal,hymns,cantiques,christian,worship,kinyarwanda,gospel,church,praise,lyrics,offline,songs
 ```
 
-## What's New (release notes for v1.0.0)
+## What's New (release notes for v1.0.0 — first release)
 ```
 First release of Indirimbo Zikundwa.
 • 5,000+ hymns across 17 collections, fully offline.
 • Fast, typo-tolerant search.
+• A clean printed-hymnal reader with clear verses and bold refrains.
 • Adjustable text size and fonts, light/sepia/dark themes.
 • Swipe between songs, share lyrics, and live Wi-Fi sing-along.
 ```
+> Note: "What's New" is not shown for a first submission — it appears on the App
+> Store only from your second version onward. Safe to leave as-is for v1.0.0.
 
 ## URLs
 - **Support URL** (required): `https://indirimbo-zikundwa.github.io/`

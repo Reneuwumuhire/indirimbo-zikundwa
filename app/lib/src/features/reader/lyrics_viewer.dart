@@ -106,6 +106,7 @@ class _StanzaBlock extends StatelessWidget {
       fontSize: settings.fontSize,
       height: 1.3,
       fontStyle: isChorus ? FontStyle.italic : FontStyle.normal,
+      fontWeight: isChorus ? FontWeight.w700 : FontWeight.normal,
       color: isChorus ? palette.chorusText : palette.verseText,
     );
     // …and a clear gap *between* hymn lines, driven by the line-spacing setting.

@@ -247,6 +247,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                 ],
                 const SizedBox(height: 26),
                 LyricsViewer(song: song, settings: zoomed),
+                const SizedBox(height: 6),
+                _EndOfSong(label: t.endOfSong),
               ],
             ),
             ),
@@ -694,6 +696,54 @@ class _HostingBanner extends StatelessWidget {
             style: TextButton.styleFrom(foregroundColor: accent),
             child: Text(stopLabel, style: const TextStyle(fontFamily: AppFonts.mono, fontSize: 11)),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A classic printed-hymnal end mark shown after the last stanza: a centered
+/// rust label flanked by small diamonds and thin rules, so the reader can see
+/// at a glance that the song is finished (and not keep scrolling for more).
+class _EndOfSong extends StatelessWidget {
+  final String label;
+  const _EndOfSong({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = Theme.of(context).extension<ReaderPalette>()!;
+    final accent = palette.chorusAccent;
+
+    Widget rule() => Expanded(
+          child: Container(height: 1.2, color: palette.muted.withValues(alpha: 0.45)),
+        );
+    Widget diamond() => Transform.rotate(
+          angle: 0.7853981633974483, // 45°
+          child: Container(width: 6, height: 6, color: accent),
+        );
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 8),
+      child: Row(
+        children: [
+          rule(),
+          const SizedBox(width: 12),
+          diamond(),
+          const SizedBox(width: 11),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: AppFonts.mono,
+              fontSize: 11,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w700,
+              color: accent,
+            ),
+          ),
+          const SizedBox(width: 11),
+          diamond(),
+          const SizedBox(width: 12),
+          rule(),
         ],
       ),
     );

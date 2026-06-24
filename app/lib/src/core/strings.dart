@@ -134,6 +134,7 @@ class Strings {
   // Reader
   String verseLabel(int n) => _t('COUPLET $n', 'VERSE $n');
   String get refrainLabel => _t('REFRAIN', 'CHORUS');
+  String get endOfSong => _t('FIN DU CHANT', 'END OF SONG');
   String version(String v) => _t('Version $v', 'Version $v');
   String get songNotFound => _t('Chant introuvable', 'Song not found');
   String get contentUpdated => _t(

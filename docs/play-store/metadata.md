@@ -1,6 +1,6 @@
 # Google Play listing — copy/paste fields
 
-App: **Indirimbo Zikundwa** · package `bi.indirimbozikunzwe` · version 1.0.0 (versionCode 2)
+App: **Indirimbo Zikundwa** · package `bi.indirimbozikunzwe` · version 1.0.0 (versionCode 4)
 
 Assets in this folder:
 - `assets/play-icon-512.png` — 512×512 high-res icon
@@ -67,11 +67,12 @@ Indirimbo Zikundwa is an independent, offline reader for congregations, choirs a
 - **Target audience:** 13+ (or "All ages"); not directed at children specifically.
 - **Languages:** English (default) + add French if you wish (UI is bilingual).
 
-## Release notes (What's new — v1.0.0)
+## Release notes (What's new — v1.0.0, first release)
 ```
-First release of Indirimbo Zikundwa.
+Welcome to Indirimbo Zikundwa!
 • 5,000+ hymns across 17 collections, fully offline.
-• Fast, typo-tolerant search.
-• Adjustable text size and fonts, light/sepia/dark themes.
+• Fast, typo-tolerant search by number, title, lyrics or author.
+• A clean printed-hymnal reader with clear verses and bold refrains.
+• Adjustable text size and fonts; light, sepia and dark themes.
 • Swipe between songs, share lyrics, and live Wi-Fi sing-along.
 ```
