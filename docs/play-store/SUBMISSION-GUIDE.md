@@ -39,7 +39,7 @@ Copy from `metadata.md`:
 
 ## 5. Upload the build
 - **App bundle:** `app/build/app/outputs/bundle/release/app-release.aab`
-  (a copy is at `Indirimbo-Zikundwa-v1.0.0-2.aab`).
+  (a copy is at the repo root: `Indirimbo-Zikundwa-v1.0.0-4.aab`, 56 MB).
 - Start with **Testing → Internal testing** (fastest, no review wait): create a
   release, upload the .aab, add your email as a tester, and install via the opt-in
   link to sanity-check. Then promote to **Production**.
