@@ -76,6 +76,11 @@ code {
 .nav-links { display: flex; align-items: center; gap: clamp(10px, 2vw, 26px); font-size: 14.5px; }
 .nav-links a { color: var(--ink-dim); transition: color .15s; font-weight: 500; }
 .nav-links a:hover { color: var(--ink); }
+.nav-web {
+  padding: 7px 12px; border: 1px solid rgba(31, 92, 68, 0.45); border-radius: 10px;
+  color: #1f5c44 !important;
+}
+.nav-links a.nav-web:hover { border-color: #1f5c44; background: rgba(31, 92, 68, 0.07); color: #1f5c44; }
 .nav-cta {
   background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #fff !important;
   padding: 8px 17px; border-radius: 10px; font-weight: 600;
@@ -295,9 +300,10 @@ code {
   .how-grid { grid-template-columns: 1fr 1fr; }
   .strip { grid-template-columns: 1fr 1fr; }
   .dl-grid { grid-template-columns: 1fr; max-width: 360px; }
-  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-links a:not(.nav-cta):not(.nav-web) { display: none; }
 }
 @media (max-width: 540px) {
+  .nav-cta { display: none; }
   .cards { grid-template-columns: 1fr; }
   .gallery { grid-auto-columns: minmax(200px, 78%); }
 }
