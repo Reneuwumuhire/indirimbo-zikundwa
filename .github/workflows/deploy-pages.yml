@@ -1,9 +1,10 @@
-name: Deploy landing site
+name: Deploy website and web app
 
 on:
   push:
     branches: [main]
     paths:
+      - 'app/**'
       - 'website/**'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
@@ -25,9 +26,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+        working-directory: app
+      - run: flutter build web --release --base-href /app/
+        working-directory: app
+      - run: |
+          mkdir _site
+          cp -R website/. _site/
+          cp -R app/build/web _site/app
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: website
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

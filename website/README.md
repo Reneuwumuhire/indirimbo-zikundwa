@@ -1,7 +1,7 @@
 # Indirimbo Zikundwa — landing site
 
-A static, single-page landing site for the **Indirimbo Zikundwa** hymnal app,
-published with **GitHub Pages**.
+A landing site and the Flutter web version of the **Indirimbo Zikundwa** hymnal
+app, published together with **GitHub Pages**.
 
 **Live:** https://indirimbo-zikundwa.github.io/
 
@@ -11,36 +11,22 @@ published with **GitHub Pages**.
 website/
   index.html      the page (semantic, SEO + Open Graph + JSON-LD)
   styles.css      warm parchment "Cantica" hymnal theme
-  app.js          auto-wires the download buttons to GitHub Release assets
+  app.js          tiny scroll-reveal enhancement
   robots.txt      crawl + sitemap
   sitemap.xml     single-URL sitemap
   assets/         icon, favicon, and app screenshots
 ```
 
-## Download buttons
+## App links
 
-The three download cards (Android · iOS · Web) start as **placeholders** that link
-to the [Releases page](https://github.com/Reneuwumuhire/indirimbo-zikundwa/releases)
-and show a *"Build coming soon"* badge.
-
-`app.js` reads the public Releases API on load and, as soon as you upload the real
-artifacts, automatically rewires each card to the direct asset URL and flips its
-badge to **Ready**. The matchers it looks for (case-insensitive):
-
-| Card    | Filename pattern matched         | Example artifact |
-| ------- | -------------------------------- | ---------------- |
-| Android | `*.apk`                          | `indirimbo-zikundwa.apk` |
-| iOS     | `*.ipa` / `*.tipa`               | `indirimbo-zikundwa.ipa` |
-| Web     | `*web*.zip` (else any archive)   | `indirimbo-web.zip` |
-
-So once you build on another machine, just attach those files to a GitHub Release
-— **no website change needed**.
+The download cards link directly to Google Play, the App Store, and `/app/` for
+the browser version.
 
 ## Deploy
 
-Pushing any change under `website/` to `main` triggers
-`.github/workflows/deploy-pages.yml`, which uploads `website/` as the Pages
-artifact and deploys it.
+Pushing a change under `website/` or `app/` to `main` triggers
+`.github/workflows/deploy-pages.yml`. It builds the Flutter app with `/app/` as
+its base path, combines it with the landing site, and deploys both.
 
 One-time setup in the repo: **Settings → Pages → Build and deployment → Source:
 GitHub Actions**.
