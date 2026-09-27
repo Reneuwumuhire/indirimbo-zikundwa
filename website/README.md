@@ -24,9 +24,11 @@ the browser version.
 
 ## Deploy
 
-Pushing a change under `website/` or `app/` to `main` triggers
-`.github/workflows/deploy-pages.yml`. It builds the Flutter app with `/app/` as
-its base path, combines it with the landing site, and deploys both.
+Run `tools/publish-org-site.sh` to build the Flutter app, combine it with the
+landing site, and publish both at `https://indirimbo-zikundwa.github.io/`.
+
+Pushes to `main` also deploy a mirror at the source repository's GitHub Pages
+URL through `.github/workflows/deploy-pages.yml`.
 
 One-time setup in the repo: **Settings → Pages → Build and deployment → Source:
 GitHub Actions**.

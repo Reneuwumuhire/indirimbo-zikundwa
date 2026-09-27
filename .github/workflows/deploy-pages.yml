@@ -32,7 +32,7 @@ jobs:
           cache: true
       - run: flutter pub get
         working-directory: app
-      - run: flutter build web --release --base-href /app/
+      - run: flutter build web --release --base-href /indirimbo-zikundwa/app/
         working-directory: app
       - run: |
           mkdir _site

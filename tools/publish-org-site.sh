@@ -11,8 +11,8 @@
 #   3. Finish the free plan signup.
 #
 # Then just run this script. It creates the  indirimbo-zikundwa.github.io  repo
-# under that org, copies the website (rewriting absolute URLs to the new domain),
-# pushes it, and enables GitHub Pages. Re-running it simply updates the site.
+# under that org, builds the Flutter web app, copies both sites, pushes them,
+# and enables GitHub Pages. Re-running it simply updates the site.
 #
 set -euo pipefail
 
@@ -43,6 +43,9 @@ if ! gh repo view "$REPO" >/dev/null 2>&1; then
     --description "Indirimbo Zikundwa — 5,495 hymns, fully offline. Official site."
 fi
 
+echo "▶ Building web app…"
+(cd "$ROOT/app" && flutter pub get && flutter build web --release --base-href /app/)
+
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 echo "▶ Preparing site contents…"
@@ -55,6 +58,8 @@ cd "$TMP/site"
 
 # Copy the website to the repo root and point absolute URLs at the new domain.
 cp -R "$SRC/." .
+[ ! -d "$TMP/site/app" ] || find "$TMP/site/app" -depth -delete
+cp -R "$ROOT/app/build/web" "$TMP/site/app"
 for f in index.html privacy.html terms.html sitemap.xml robots.txt README.md; do
   [ -f "$f" ] && sed -i '' "s#$OLD_URL#$NEW_URL#g" "$f" 2>/dev/null \
               || { [ -f "$f" ] && sed -i "s#$OLD_URL#$NEW_URL#g" "$f"; }
@@ -65,7 +70,7 @@ git -c user.name="Rene Uwumuhire" -c user.email="reneuwumuhire@gmail.com" \
     commit -q -m "Publish Indirimbo Zikundwa site" || echo "  (no changes to commit)"
 git branch -M main
 echo "▶ Pushing to ${REPO}…"
-git push -u origin main --force
+git push -u origin main
 
 echo "▶ Enabling GitHub Pages…"
 gh api -X POST "repos/$REPO/pages" -f "source[branch]=main" -f "source[path]=/" >/dev/null 2>&1 \
