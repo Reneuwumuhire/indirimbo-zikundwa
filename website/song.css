@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Spectral:wght@400;500&display=swap");
+
+:root {
+  --parchment: #f3ead9;
+  --paper: #fffaf0;
+  --ink: #2c241d;
+  --muted: #7c6f5e;
+  --burgundy: #6e2230;
+  --green: #1f5c44;
+  --line: rgba(44, 36, 29, 0.17);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--parchment); }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: linear-gradient(100deg, rgba(110, 34, 48, 0.035), transparent 24rem), var(--parchment);
+  font-family: "Spectral", Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+}
+a { color: var(--burgundy); }
+a:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; }
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 64px;
+  padding: 10px clamp(18px, 4vw, 48px);
+  border-bottom: 1px solid var(--line);
+  background: rgba(243, 234, 217, 0.92);
+}
+.brand { color: var(--ink); font-family: "Playfair Display", Georgia, serif; font-weight: 800; text-decoration: none; }
+.open-app { padding: 7px 14px; border: 1px solid var(--green); border-radius: 999px; color: var(--green); font: 600 14px system-ui, sans-serif; text-decoration: none; }
+
+.hymn { width: min(720px, calc(100% - 40px)); margin: 0 auto; padding: clamp(38px, 7vw, 72px) 0 90px; }
+.number { margin: 0 0 8px; color: var(--burgundy); font: 700 12px ui-monospace, monospace; letter-spacing: .08em; }
+h1 { margin: 0; font: 800 clamp(30px, 5vw, 48px)/1.08 "Playfair Display", Georgia, serif; }
+.collection { margin: 12px 0 30px; color: var(--muted); font-style: italic; }
+.author { margin-left: .4em; }
+.rule { height: 1px; margin-bottom: 30px; background: var(--line); }
+.stanza { margin: 0 0 28px; }
+.stanza h2 { margin: 0 0 7px; color: var(--muted); font: 700 11px ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; }
+.stanza p { margin: 0; white-space: pre-line; }
+.chorus { padding-left: 18px; border-left: 3px solid rgba(110, 34, 48, .35); }
+
+.pager { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; padding: 16px clamp(18px, 4vw, 48px); border-top: 1px solid var(--line); font: 600 14px system-ui, sans-serif; }
+.pager a { text-decoration: none; }
+.pager .next { text-align: right; }
+.all-songs { text-align: center; }
+
+.directory { width: min(1000px, calc(100% - 40px)); margin: 0 auto; padding: 56px 0 90px; }
+.directory h1 { margin-bottom: 12px; }
+.directory > p { color: var(--muted); }
+.collection-list { margin: 44px 0 0; }
+.collection-list section { padding: 26px 0; border-top: 1px solid var(--line); }
+.collection-list h2 { margin: 0 0 12px; font: 700 25px "Playfair Display", Georgia, serif; }
+.song-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px 26px; margin: 0; padding: 0; list-style: none; }
+.song-links a { display: block; padding: 5px 0; text-decoration: none; }
+.song-links span { color: var(--muted); font: 700 12px ui-monospace, monospace; }
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  .open-app { font-size: 12px; }
+  .pager { grid-template-columns: 1fr 1fr; }
+  .all-songs { grid-column: 1 / -1; grid-row: 2; }
+}

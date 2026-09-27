@@ -60,6 +60,7 @@ cd "$TMP/site"
 cp -R "$SRC/." .
 [ ! -d "$TMP/site/app" ] || find "$TMP/site/app" -depth -delete
 cp -R "$ROOT/app/build/web" "$TMP/site/app"
+node "$ROOT/tools/build-song-pages.mjs" "$TMP/site"
 for f in index.html privacy.html terms.html sitemap.xml robots.txt README.md; do
   [ -f "$f" ] && sed -i '' "s#$OLD_URL#$NEW_URL#g" "$f" 2>/dev/null \
               || { [ -f "$f" ] && sed -i "s#$OLD_URL#$NEW_URL#g" "$f"; }

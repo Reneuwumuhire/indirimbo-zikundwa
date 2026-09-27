@@ -13,9 +13,14 @@ website/
   styles.css      warm parchment "Cantica" hymnal theme
   app.js          tiny scroll-reveal enhancement
   robots.txt      crawl + sitemap
-  sitemap.xml     single-URL sitemap
+  sitemap.xml     base sitemap (hymn URLs are added at deploy time)
+  song.css        indexable hymn-page styles
   assets/         icon, favicon, and app screenshots
 ```
+
+`tools/build-song-pages.mjs` generates `/songs/`, one static HTML page per hymn,
+and adds those URLs to the deployed sitemap. Generated pages stay out of this
+source tree and are created during deployment.
 
 ## App links
 

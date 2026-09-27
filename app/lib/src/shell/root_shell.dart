@@ -12,6 +12,7 @@ import 'package:indirimbo/src/features/library/home_screen.dart';
 import 'package:indirimbo/src/features/search/search_screen.dart';
 import 'package:indirimbo/src/features/favorites/favorites_screen.dart';
 import 'package:indirimbo/src/features/settings/settings_screen.dart';
+import 'package:indirimbo/src/features/reader/reader_screen.dart';
 
 /// Root shell with a persistent bottom navigation bar. Each tab owns its own
 /// Navigator, so pushed routes (collection, reader) keep the bottom bar visible.
@@ -23,6 +24,7 @@ class RootShell extends ConsumerStatefulWidget {
 
 class _RootShellState extends ConsumerState<RootShell> {
   final _navKeys = List.generate(4, (_) => GlobalKey<NavigatorState>());
+  bool _songLinkHandled = false;
 
   @override
   void initState() {
@@ -45,6 +47,19 @@ class _RootShellState extends ConsumerState<RootShell> {
     FavoritesScreen(),
     SettingsScreen(),
   ];
+
+  void _openLinkedSong() {
+    if (_songLinkHandled) return;
+    _songLinkHandled = true;
+    final id = Uri.base.queryParameters['song'];
+    final repo = ref.read(repositoryProvider).valueOrNull;
+    if (id == null || repo?.byId(id) == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _navKeys[0].currentState?.push(
+        MaterialPageRoute(builder: (_) => ReaderScreen(songId: id)),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +85,7 @@ class _RootShellState extends ConsumerState<RootShell> {
         ),
       ),
       data: (_) {
+        _openLinkedSong();
         final following =
             ref.watch(shareControllerProvider.select((s) => s.isFollowing));
         return Stack(

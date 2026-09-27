@@ -38,6 +38,7 @@ jobs:
           mkdir _site
           cp -R website/. _site/
           cp -R app/build/web _site/app
+          node tools/build-song-pages.mjs _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

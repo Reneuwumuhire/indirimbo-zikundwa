@@ -15,6 +15,7 @@ import 'package:indirimbo/src/core/font_combos.dart';
 import 'package:indirimbo/src/features/sharing/share_sheet.dart';
 import 'package:indirimbo/src/features/reader/lyrics_viewer.dart';
 import 'package:indirimbo/src/features/reader/reader_controls.dart';
+import 'package:indirimbo/src/features/reader/browser_url.dart';
 
 class ReaderScreen extends ConsumerStatefulWidget {
   final String songId;
@@ -41,11 +42,16 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   void initState() {
     super.initState();
     _scroll.addListener(_onScroll);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _broadcast(force: true));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _broadcast(force: true);
+      final song = ref.read(repositoryProvider).valueOrNull?.byId(widget.songId);
+      if (song != null) showSongInAddressBar(song.id, song.displayTitle);
+    });
   }
 
   @override
   void dispose() {
+    clearSongFromAddressBar(widget.songId);
     _scroll.removeListener(_onScroll);
     _scroll.dispose();
     // Leaving the reader: drop fullscreen, restore system UI, release wakelock.

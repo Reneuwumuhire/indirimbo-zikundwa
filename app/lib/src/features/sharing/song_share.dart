@@ -7,7 +7,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:indirimbo/src/data/models.dart';
 import 'package:indirimbo/src/core/strings.dart';
 
-const _appUrl = 'https://indirimbo-zikundwa.github.io/app/';
+String songUrl(String id) =>
+    'https://indirimbo-zikundwa.github.io/songs/${Uri.encodeComponent(id)}.html';
 
 /// Build a clean, readable text rendering of a song for sharing.
 String songAsText(Song song, String collectionName, Strings t) {
@@ -26,7 +27,7 @@ String songAsText(Song song, String collectionName, Strings t) {
   }
 
   b.writeln('— Indirimbo Zikundwa');
-  b.write(_appUrl);
+  b.write(songUrl(song.id));
   return b.toString();
 }
 
