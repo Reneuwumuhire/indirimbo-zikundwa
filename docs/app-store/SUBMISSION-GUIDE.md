@@ -4,6 +4,7 @@ Everything you need is in this folder:
 - `metadata.md` — all text fields (name, subtitle, description, keywords, URLs…).
 - `privacy-and-review.md` — App Privacy answers, App Review notes, export compliance, content-rights note.
 - `screenshots/6.9-inch/*.png` — 4 screenshots at 1320×2868 (the required 6.9" size).
+- `screenshots/13-inch-ipad/*.png` — 4 screenshots at 2064×2752 for the iPad listing.
 - App icon (1024, opaque) ships **inside the build** (generated from `assets/icon/icon.png`); no separate upload needed.
 
 You already have a paid Apple Developer account + App Store Connect (the "Users and Access" page), so you're past the hardest prerequisite.
@@ -29,7 +30,7 @@ In the app's **(version) page** and **App Information**:
 - App name, subtitle, promotional text, description, keywords, support URL, marketing URL → copy from `metadata.md`.
 - **Category:** Books (primary). **Age rating:** 4+ (answer "None" to everything).
 - **Privacy Policy URL:** `https://indirimbo-zikundwa.github.io/privacy.html`.
-- Upload the 4 **screenshots** to the **6.9" iPhone** slot (drag the PNGs from `screenshots/6.9-inch/`). One size set is enough — App Store reuses 6.9" for smaller iPhones.
+- Upload the 4 **iPhone screenshots** from `screenshots/6.9-inch/` and the 4 **iPad screenshots** from `screenshots/13-inch-ipad/`.
 
 ## 3. App Privacy
 App Store Connect → **App Privacy** → "**Data Not Collected**" (see `privacy-and-review.md`). Publish.
@@ -42,7 +43,7 @@ Export compliance is pre-answered in Info.plist, so uploads won't prompt for it.
 cd app
 flutter build ipa --release
 ```
-Then open `app/build/ios/archive/Runner.xcarchive` in **Xcode → Window → Organizer → Distribute App → App Store Connect → Upload**. Xcode handles distribution signing automatically (Automatic signing + your team R9SGKU48YJ).
+Then open `app/build/ios/archive/Runner.xcarchive` in **Xcode → Window → Organizer → Distribute App → App Store Connect → Upload**. Xcode handles distribution signing automatically (Automatic signing + your team UCZ9TB4DH3).
 
 > If you hit *"App ID … cannot be registered / no profiles"*: open `app/ios/Runner.xcworkspace` in Xcode → select the **Runner** target → **Signing & Capabilities** → ensure **Automatically manage signing** is on and your **Team** is selected → Xcode re-creates the App ID + profile. (This is the same hiccup we saw locally.)
 
